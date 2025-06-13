@@ -4,7 +4,7 @@
 
 {% block content %}
 
-
+<br><br><br><br><br><br><br>
 <div class="container">
     <div class="row my-3">
         <div class="col-sm-6 offset-sm-3">
@@ -28,7 +28,7 @@
                     <input type="submit" value="Submit" class="btn btn-primary">
                 </div>
                 <br>
-                <div class="text-center text-primary fw-bold"><small>Existing User ? <a href="{% url 'login' %}"
+                <div class="text-center text-primary fw-bold"><small>Existing User ? <a href="{% url "login" %}"
                             class="text-danger">Login Now</a> </small></div>
                 {% if form.non_field_errors %}
                 {% for error in form.non_field_errors %}
@@ -39,5 +39,5 @@
         </div>
     </div>
 </div>
-
+<br><br><br>
 {% endblock content %}

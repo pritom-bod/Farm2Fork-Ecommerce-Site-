@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import Product
 from django.views import View
 from django.contrib import messages
-from .forms import UserRegForm
+from .forms import UserRegForm, LoginForm
 # Create your views here.
 
 class ProductView(View):
@@ -69,11 +69,11 @@ def E_page(request):
 class userregistration(View):
     def get(self, request):
         form = UserRegForm()
-        return render(request, 'Shop/customerregistration.html',{'form':form})
+        return render(request, 'shop/registration.html',{'form':form})
     
     def post(self,request):
         form =UserRegForm(request.POST)
         if form.is_valid():
             messages.success(request, 'Congratulattion, User Created')
             form.save()
-        return render(request, 'Shop/customerregistration.html', {'form':form})
+        return render(request, 'shop/registration.html', {'form':form})

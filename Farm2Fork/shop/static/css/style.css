@@ -27,6 +27,31 @@
 }
 /*** Spinner End ***/
 
+.fruite-item {
+    height: 100%; /* Ensure full height card if used in flex */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 0 8px rgba(0,0,0,0.08);
+    transition: all 0.3s ease-in-out;
+}
+
+/* Image Height Control */
+.fruite-img img {
+    height: 200px;
+    object-fit: cover;
+}
+
+/* Description Clamp Without -webkit-line-clamp */
+#product-desc {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    line-height: 1.5em;
+    max-height: 4.5em; /* 3 lines = 3 x 1.5em */
+}
+
+
 
 /*** Button Start ***/
 .btn {

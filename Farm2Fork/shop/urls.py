@@ -2,6 +2,8 @@ from django.urls import path
 from shop import views 
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_view
+from .forms import LoginForm
 
 urlpatterns = [
 
@@ -15,5 +17,6 @@ urlpatterns = [
     path('testimonial/', views.testimonial, name='testimonial'),
     path('404-page/', views.E_page, name='404-page'),
     path('Registration/', views.userregistration.as_view(), name='registration'),
+    path('account/Login/',auth_view.LoginView.as_view(template_name='shop/login.html', authentication_form=LoginForm),name='login'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
