@@ -28,7 +28,12 @@ def shop(request, data=None):
         products = Product.objects.filter(category='FH')
     elif data == 'Dryfruits':
         products = Product.objects.filter(category='DF')
-
+    elif data == 'Fruits':
+        products = Product.objects.filter(category='F')
+    elif data == 'Vegetable':
+        products = Product.objects.filter(category='V')
+    elif data == 'meat':
+        products = Product.objects.filter(category='M')
 
     price = request.GET.get('price')  # Price from GET request (slider)
     if price:
@@ -42,9 +47,7 @@ def shop(request, data=None):
         'products': products
     })
 
-    return render(request, 'shop/shop.html',{
-        'products':products
-    })
+
 
 def cart(request):
     return render(request, 'shop/cart.html')
