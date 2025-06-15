@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import Product
 from django.views import View
 from django.contrib import messages
-from .forms import UserRegForm, LoginForm
+from .forms import UserRegForm, LoginForm, PassChangeForm
 # Create your views here.
 
 class ProductView(View):
@@ -65,6 +65,8 @@ def testimonial(request):
     return render(request, 'shop/testimonial.html')
 def E_page(request):
     return render(request, 'shop/404.html')
+def Profile(request):
+    return render(request, 'shop/profile.html')
 
 class userregistration(View):
     def get(self, request):

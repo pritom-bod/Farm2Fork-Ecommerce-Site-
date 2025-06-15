@@ -84,10 +84,25 @@
                                 <a href="#" class="my-auto" data-bs-toggle="dropdown">
                                      <i class="fas fa-user fa-2x"></i>
                                 </a>
+                                {% if request.user.is_authenticated %}
+                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                    <a href="{% url "profile" %}" class="dropdown-item">Profile</a>
+                                    <a href="{% url "chackout" %}" class="dropdown-item">Checkout</a>   
+                                    <a href="{% url "passwordchange" %}" class="dropdown-item">Password Change</a>   
+                                    <form action='{% url "logout" %}' method='post'>
+                                        {% csrf_token %}
+                                        <button class='dropdown-item bg-warning m-0 rounded-0' type='submit'>Log Out</button>
+                                    </form>
+                                </div>
+                                {% else %}
                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">
                                     <a href="{% url "login" %}" class="dropdown-item">Login</a>
                                     <a href="{% url "registration" %}" class="dropdown-item">Register</a>
+
                                 </div>
+                                
+                                {% endif %}
+                                
                             </div>
 
 
