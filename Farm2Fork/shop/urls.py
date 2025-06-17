@@ -20,5 +20,7 @@ urlpatterns = [
     path('Registration/', views.userregistration.as_view(), name='registration'),
     path('account/Login/',auth_view.LoginView.as_view(template_name='shop/login.html', authentication_form=LoginForm),name='login'),
     path('logout/', auth_view.LogoutView.as_view(next_page='login'), name='logout'),
-    path('password-change/',auth_view.PasswordChangeView.as_view(template_name='shop/passwordchange.html', form_class=PassChangeForm, success_url ='/Password change Done'), name='passwordchange'),
+    path('password-change/',auth_view.PasswordChangeView.as_view(template_name='shop/passwordchange.html', form_class=PassChangeForm, success_url ='/passwordchangedone'), name='passwordchange'),
+    path('passwordchangedone/', auth_view.PasswordChangeView.as_view(template_name='shop/passwordchangedone.html'), name='passwordchangedone'),
+    
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Product
+from .models import Product, UserProfile
 from django.views import View
 from django.contrib import messages
 from .forms import UserRegForm, LoginForm, PassChangeForm
@@ -35,13 +35,13 @@ def shop(request, data=None):
     elif data == 'meat':
         products = Product.objects.filter(category='M')
 
-    price = request.GET.get('price')  # Price from GET request (slider)
+    price = request.GET.get('price')  
     if price:
         try:
             price = int(price)
-            products = products.filter(discounted_price__lte=price)  # Filter products under or equal to selected price
+            products = products.filter(discounted_price__lte=price)  # Filter products# by tk
         except ValueError:
-            pass  # In case of invalid input, just ignore
+            pass  
 
     return render(request, 'shop/shop.html', {
         'products': products
@@ -69,6 +69,20 @@ def testimonial(request):
 def E_page(request):
     return render(request, 'shop/404.html')
 def Profile(request):
+    if request.method == 'POST':
+        first_name =  request.POST.get('firstname')
+        last_name =  request.POST.get('lastname')
+        email = request.POST.get('email')
+        address = request.POST.get('address')
+        city = request.POST.get('city')
+        country = request.POST.get('country')
+        postcode = request.POST.get('postcode')
+        mobile = request.POST.get('mobile')
+
+        Profile = UserProfile(first_name=first_name, last_name=last_name, email=email, address=address, city=city, country=country, postcode=postcode, number=mobile)
+        Profile.save()
+        return render(request, 'shop/profile.html', {'userprofile':Profile})
+   
     return render(request, 'shop/profile.html')
 
 class userregistration(View):
