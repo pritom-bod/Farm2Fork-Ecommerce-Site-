@@ -1,3 +1,4 @@
+// main.js (Updated with AJAX for add to cart, update, remove)
 (function ($) {
     "use strict";
 
@@ -147,5 +148,99 @@
         button.parent().parent().find('input').val(newVal);
     });
 
-})(jQuery);
+    // CSRF Token Helper
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
 
+    // Add to Cart AJAX
+    $('.add-to-cart').on('click', function (e) {
+        e.preventDefault();
+        var product_id = $(this).data('product-id');
+        $.ajax({
+            url: '/add-to-cart/',
+            method: 'POST',
+            data: { product_id: product_id, quantity: 1 },
+            headers: { 'X-CSRFToken': csrftoken },
+            success: function (data) {
+                if (data.success) {
+                    alert('Product added to cart!');
+                    // Optionally update cart count in navbar if you add one
+                } else {
+                    alert('Error adding to cart.');
+                }
+            },
+            error: function () {
+                alert('Request failed.');
+            }
+        });
+    });
+
+    // Cart Page AJAX for + / -
+    $('.btn-plus, .btn-minus').on('click', function (e) {
+        e.preventDefault();
+        var button = $(this);
+        var row = button.closest('tr');
+        var item_id = row.data('item-id');
+        var action = button.data('action');
+        $.ajax({
+            url: '/update-cart-item/',
+            method: 'POST',
+            data: { item_id: item_id, action: action },
+            headers: { 'X-CSRFToken': csrftoken },
+            success: function (data) {
+                if (data.success) {
+                    row.find('.quantity-input').val(data.new_quantity);
+                    row.find('.item-total').text('$' + data.subtotal);
+                    $('.cart-total').text('$' + data.cart_total);
+                } else {
+                    alert('Error updating quantity.');
+                }
+            },
+            error: function () {
+                alert('Request failed.');
+            }
+        });
+    });
+
+    // Remove Item AJAX
+    $('.remove-item').on('click', function (e) {
+        e.preventDefault();
+        var button = $(this);
+        var row = button.closest('tr');
+        var item_id = row.data('item-id');
+        $.ajax({
+            url: '/remove-from-cart/',
+            method: 'POST',
+            data: { item_id: item_id },
+            headers: { 'X-CSRFToken': csrftoken },
+            success: function (data) {
+                if (data.success) {
+                    row.remove();
+                    $('.cart-total').text('$' + data.cart_total);
+                    if ($('tbody tr').length === 0) {
+                        $('tbody').append('<tr><td colspan="6">Your cart is empty.</td></tr>');
+                    }
+                } else {
+                    alert('Error removing item.');
+                }
+            },
+            error: function () {
+                alert('Request failed.');
+            }
+        });
+    });
+
+})(jQuery);

@@ -89,39 +89,23 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {% for item in cart_items %}
                                         <tr>
                                             <th scope="row">
                                                 <div class="d-flex align-items-center mt-2">
-                                                    <img src="img/vegetable-item-2.jpg" class="img-fluid rounded-circle" style="width: 90px; height: 90px;" alt="">
+                                                    <img src="{{ item.product.product_image.url }}" class="img-fluid rounded-circle" style="width: 90px; height: 90px;" alt="">
                                                 </div>
                                             </th>
-                                            <td class="py-5">Awesome Brocoli</td>
-                                            <td class="py-5">$69.00</td>
-                                            <td class="py-5">2</td>
-                                            <td class="py-5">$138.00</td>
+                                            <td class="py-5">{{ item.product.title }}</td>
+                                            <td class="py-5">${{ item.product.discounted_price }}</td>
+                                            <td class="py-5">{{ item.quantity }}</td>
+                                            <td class="py-5">${{ item.subtotal }}</td>
                                         </tr>
+                                        {% empty %}
                                         <tr>
-                                            <th scope="row">
-                                                <div class="d-flex align-items-center mt-2">
-                                                    <img src="img/vegetable-item-5.jpg" class="img-fluid rounded-circle" style="width: 90px; height: 90px;" alt="">
-                                                </div>
-                                            </th>
-                                            <td class="py-5">Potatoes</td>
-                                            <td class="py-5">$69.00</td>
-                                            <td class="py-5">2</td>
-                                            <td class="py-5">$138.00</td>
+                                            <td colspan="5">No items in cart.</td>
                                         </tr>
-                                        <tr>
-                                            <th scope="row">
-                                                <div class="d-flex align-items-center mt-2">
-                                                    <img src="img/vegetable-item-3.png" class="img-fluid rounded-circle" style="width: 90px; height: 90px;" alt="">
-                                                </div>
-                                            </th>
-                                            <td class="py-5">Big Banana</td>
-                                            <td class="py-5">$69.00</td>
-                                            <td class="py-5">2</td>
-                                            <td class="py-5">$138.00</td>
-                                        </tr>
+                                        {% endfor %}
                                         <tr>
                                             <th scope="row">
                                             </th>
@@ -132,7 +116,7 @@
                                             </td>
                                             <td class="py-5">
                                                 <div class="py-3 border-bottom border-top">
-                                                    <p class="mb-0 text-dark">$414.00</p>
+                                                    <p class="mb-0 text-dark">${{ total }}</p>
                                                 </div>
                                             </td>
                                         </tr>
@@ -167,7 +151,7 @@
                                             <td class="py-5"></td>
                                             <td class="py-5">
                                                 <div class="py-3 border-bottom border-top">
-                                                    <p class="mb-0 text-dark">$135.00</p>
+                                                    <p class="mb-0 text-dark">${{ total }}</p>
                                                 </div>
                                             </td>
                                         </tr>
@@ -218,4 +202,3 @@
         <!-- Checkout Page End -->
 
 {% endblock content %}
-        
