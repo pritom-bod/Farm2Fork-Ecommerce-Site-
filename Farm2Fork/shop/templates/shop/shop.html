@@ -188,4 +188,39 @@
         <script type="text/javascript">
             var csrftoken = "{{ csrf_token }}";
         </script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('.add-to-cart').click(function(e) {
+                    e.preventDefault();
+                    var product_id = $(this).data('product-id');
+                    var quantity = 1;  // Default to 1 since no quantity input
+                    $.ajax({
+                        type: 'POST',
+                        url: '{% url "add_to_cart" %}',
+                        data: {
+                            product_id: product_id,
+                            quantity: quantity,
+                            csrfmiddlewaretoken: csrftoken
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                alert('Product added to cart!');
+                                // Optionally update cart icon or total here
+                            } else {
+                                if (response.message) {
+                                    alert(response.message);
+                                }
+                                if (response.redirect) {
+                                    window.location.href = response.redirect;
+                                }
+                            }
+                        },
+                        error: function() {
+                            alert('Error adding to cart');
+                        }
+                    });
+                });
+            });
+        </script>
 {% endblock content %}

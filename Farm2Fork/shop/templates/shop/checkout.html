@@ -1,0 +1,100 @@
+<!-- checkout.html -->
+{% extends "shop/base.html" %}
+{% load static %}
+{% block title %}Checkout{% endblock title %}
+{% block content %}
+    <!-- Single Page Header start -->
+    <div class="container-fluid page-header py-5">
+        <h1 class="text-center text-white display-6">Checkout</h1>
+        <ol class="breadcrumb justify-content-center mb-0">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Pages</a></li>
+            <li class="breadcrumb-item active text-white">Checkout</li>
+        </ol>
+    </div>
+    <!-- Single Page Header End -->
+
+    <!-- Checkout Page Start -->
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+            <h1 class="mb-4">Billing details</h1>
+            <form method="post">
+                {% csrf_token %}
+                <div class="row g-5">
+                    <div class="col-md-12 col-lg-6 col-xl-7">
+                        {{ form.as_p }}
+                    </div>
+                    <div class="col-md-12 col-lg-6 col-xl-5">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Products</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Quantity</th>
+                                        <th scope="col">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in cart_items %}
+                                    <tr>
+                                        <th scope="row">
+                                            <div class="d-flex align-items-center mt-2">
+                                                <img src="{{ item.product.product_image.url }}" class="img-fluid rounded-circle" style="width: 90px; height: 90px;" alt="">
+                                            </div>
+                                        </th>
+                                        <td class="py-5">{{ item.product.title }}</td>
+                                        <td class="py-5">${{ item.product.discounted_price }}</td>
+                                        <td class="py-5">{{ item.quantity }}</td>
+                                        <td class="py-5">${{ item.subtotal }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    <tr>
+                                        <th scope="row">
+                                        </th>
+                                        <td class="py-5"></td>
+                                        <td class="py-5"></td>
+                                        <td class="py-5">
+                                            <p class="mb-0 text-dark py-3">Subtotal:</p>
+                                        </td>
+                                        <td class="py-5">
+                                            <div class="py-3 border-bottom border-top">
+                                                <p class="mb-0 text-dark">${{ total }}</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">
+                                        </th>
+                                        <td class="py-5">
+                                            <p class="mb-0 text-dark">Shipping</p>
+                                        </td>
+                                        <td colspan="3" class="py-5">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="" id="free-shipping" name="shipping" checked>
+                                                <label class="form-check-label" for="free-shipping">Free Shipping</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">
+                                        </th>
+                                        <td class="py-5">
+                                            <p class="mb-0 text-dark">Total</p>
+                                        </td>
+                                        <td colspan="3" class="py-5">
+                                            <p class="mb-0 text-dark">${{ total }}</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <button class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="submit">Place Order</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Checkout Page End -->
+{% endblock content %}

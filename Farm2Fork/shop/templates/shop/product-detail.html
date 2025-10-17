@@ -1,3 +1,4 @@
+<!-- product-detail.html -->
 {% extends "shop/base.html" %}
 {% load static %}
 {% block title %}Product Details{% endblock title %}
@@ -32,11 +33,12 @@
                                 <p class="mb-3">Category: {{product.category}}</p>
                                 <h5 class="fw-bold mb-3">{{product.discounted_price}}৳</h5>
                                 <div class="d-flex mb-4">
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star"></i>
+                                    {% with avg=product.average_rating %}
+                                        {% for i in "12345"|make_list %}
+                                            <i class="fa fa-star {% if forloop.counter <= avg %}text-secondary{% else %}text-muted{% endif %}"></i>
+                                        {% endfor %}
+                                    {% endwith %}
+                                    <span class="ms-2">({{ product.total_reviews }} reviews)</span>
                                 </div>
                                 <p class="mb-4">{{product.descriptions}}.</p>
                                 <p class="mb-4">Susp endisse ultricies nisi vel quam suscipit. Sabertooth peacock flounder; chain pickerel hatchetfish, pencilfish snailfish</p>
@@ -53,7 +55,7 @@
                                         </button>
                                     </div>
                                 </div>
-                                <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                                <button type="button" class="add-to-cart btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary" data-product-id="{{ product.id }}"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</button>
                             </div>
                             <div class="col-lg-12">
                                 <nav>
@@ -117,86 +119,69 @@
                                         </div>
                                     </div>
                                     <div class="tab-pane" id="nav-mission" role="tabpanel" aria-labelledby="nav-mission-tab">
-                                        <div class="d-flex">
-                                            <img src="img/avatar.jpg" class="img-fluid rounded-circle p-3" style="width: 100px; height: 100px;" alt="">
+                                        {% for review in reviews %}
+                                        <div class="d-flex mb-4">
+                                            <img src="{% static "img/avatar.jpg" %}" class="img-fluid rounded-circle p-3" style="width: 100px; height: 100px;" alt="">
                                             <div class="">
-                                                <p class="mb-2" style="font-size: 14px;">April 12, 2024</p>
                                                 <div class="d-flex justify-content-between">
-                                                    <h5>Jason Smith</h5>
+                                                    <h5>{{ review.user.username }}</h5>
                                                     <div class="d-flex mb-3">
-                                                        <i class="fa fa-star text-secondary"></i>
-                                                        <i class="fa fa-star text-secondary"></i>
-                                                        <i class="fa fa-star text-secondary"></i>
-                                                        <i class="fa fa-star text-secondary"></i>
-                                                        <i class="fa fa-star"></i>
+                                                        {% for i in "12345"|make_list %}
+                                                            <i class="fa fa-star {% if forloop.counter <= review.rating %}text-secondary{% endif %}"></i>
+                                                        {% endfor %}
                                                     </div>
                                                 </div>
-                                                <p>The generated Lorem Ipsum is therefore always free from repetition injected humour, or non-characteristic 
-                                                    words etc. Susp endisse ultricies nisi vel quam suscipit </p>
+                                                <p>{{ review.comment }}</p>
+                                                <small>{{ review.created_at|date:"F j, Y" }}</small>
                                             </div>
                                         </div>
-                                        <div class="d-flex">
-                                            <img src="img/avatar.jpg" class="img-fluid rounded-circle p-3" style="width: 100px; height: 100px;" alt="">
-                                            <div class="">
-                                                <p class="mb-2" style="font-size: 14px;">April 12, 2024</p>
-                                                <div class="d-flex justify-content-between">
-                                                    <h5>Sam Peters</h5>
-                                                    <div class="d-flex mb-3">
-                                                        <i class="fa fa-star text-secondary"></i>
-                                                        <i class="fa fa-star text-secondary"></i>
-                                                        <i class="fa fa-star text-secondary"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                    </div>
-                                                </div>
-                                                <p class="text-dark">The generated Lorem Ipsum is therefore always free from repetition injected humour, or non-characteristic 
-                                                    words etc. Susp endisse ultricies nisi vel quam suscipit </p>
+                                        {% empty %}
+                                        <p>No reviews yet.</p>
+                                        {% endfor %}
+
+                                        {% if has_purchased %}
+                                        <h4 class="mb-3">Leave a Review</h4>
+                                        <form id="review-form" method="post" action="{% url 'submit_review' product.id %}">
+                                            {% csrf_token %}
+                                            <div class="mb-3">
+                                                <label for="id_rating" class="form-label">Rating</label>
+                                                {{ form.rating }}
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane" id="nav-vision" role="tabpanel">
-                                        <p class="text-dark">Tempor erat elitr rebum at clita. Diam dolor diam ipsum et tempor sit. Aliqu diam
-                                            amet diam et eos labore. 3</p>
-                                        <p class="mb-0">Diam dolor diam ipsum et tempor sit. Aliqu diam amet diam et eos labore.
-                                            Clita erat ipsum et lorem et sit</p>
+                                            <div class="mb-3">
+                                                <label for="id_comment" class="form-label">Comment</label>
+                                                {{ form.comment }}
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Submit Review</button>
+                                        </form>
+                                        {% else %}
+                                        <p>You must purchase this product to leave a review.</p>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
-                            <form action="#">
-                                <h4 class="mb-5 fw-bold">Leave a Reply</h4>
-                                <div class="row g-4">
-                                    <div class="col-lg-6">
-                                        <div class="border-bottom rounded">
-                                            <input type="text" class="form-control border-0 me-4" placeholder="Yur Name *">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="border-bottom rounded">
-                                            <input type="email" class="form-control border-0" placeholder="Your Email *">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="border-bottom rounded my-4">
-                                            <textarea name="" id="" class="form-control border-0" cols="30" rows="8" placeholder="Your Review *" spellcheck="false"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="d-flex justify-content-between py-3 mb-5">
-                                            <div class="d-flex align-items-center">
-                                                <p class="mb-0 me-3">Please rate:</p>
-                                                <div class="d-flex align-items-center" style="font-size: 12px;">
-                                                    <i class="fa fa-star text-muted"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                </div>
-                                            </div>
-                                            <a href="#" class="btn border border-secondary text-primary rounded-pill px-4 py-3"> Post Comment</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
+                            <script>
+                                $(document).ready(function() {
+                                    $('#review-form').submit(function(e) {
+                                        e.preventDefault();
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: $(this).attr('action'),
+                                            data: $(this).serialize(),
+                                            success: function(response) {
+                                                if (response.success) {
+                                                    alert('Review submitted!');
+                                                    location.reload();
+                                                } else {
+                                                    alert('Error: ' + JSON.stringify(response.errors));
+                                                }
+                                            },
+                                            error: function() {
+                                                alert('Error submitting review');
+                                            }
+                                        });
+                                    });
+                                });
+                            </script>
                         </div>
                     </div>
                     <div class="col-lg-4 col-xl-3">
@@ -246,7 +231,7 @@
                                 <h4 class="mb-4">Featured products</h4>
                                 <div class="d-flex align-items-center justify-content-start">
                                     <div class="rounded" style="width: 100px; height: 100px;">
-                                        <img src="img/featur-1.jpg" class="img-fluid rounded" alt="Image">
+                                        <img src="{% static "img/featur-1.jpg" %}" class="img-fluid rounded" alt="Image">
                                     </div>
                                     <div>
                                         <h6 class="mb-2">Big Banana</h6>
@@ -255,7 +240,7 @@
                                             <i class="fa fa-star text-secondary"></i>
                                             <i class="fa fa-star text-secondary"></i>
                                             <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star text-secondary"></i>
                                         </div>
                                         <div class="d-flex mb-2">
                                             <h5 class="fw-bold me-2">2.99 $</h5>
@@ -265,7 +250,7 @@
                                 </div>
                                 <div class="d-flex align-items-center justify-content-start">
                                     <div class="rounded" style="width: 100px; height: 100px;">
-                                        <img src="img/featur-2.jpg" class="img-fluid rounded" alt="">
+                                        <img src="{% static "img/featur-2.jpg" %}" class="img-fluid rounded" alt="">
                                     </div>
                                     <div>
                                         <h6 class="mb-2">Big Banana</h6>
@@ -274,7 +259,7 @@
                                             <i class="fa fa-star text-secondary"></i>
                                             <i class="fa fa-star text-secondary"></i>
                                             <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star text-secondary"></i>
                                         </div>
                                         <div class="d-flex mb-2">
                                             <h5 class="fw-bold me-2">2.99 $</h5>
@@ -284,7 +269,7 @@
                                 </div>
                                 <div class="d-flex align-items-center justify-content-start">
                                     <div class="rounded" style="width: 100px; height: 100px;">
-                                        <img src="img/featur-3.jpg" class="img-fluid rounded" alt="">
+                                        <img src="{% static "img/featur-3.jpg" %}" class="img-fluid rounded" alt="">
                                     </div>
                                     <div>
                                         <h6 class="mb-2">Big Banana</h6>
@@ -293,7 +278,7 @@
                                             <i class="fa fa-star text-secondary"></i>
                                             <i class="fa fa-star text-secondary"></i>
                                             <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star text-secondary"></i>
                                         </div>
                                         <div class="d-flex mb-2">
                                             <h5 class="fw-bold me-2">2.99 $</h5>
@@ -303,7 +288,7 @@
                                 </div>
                                 <div class="d-flex align-items-center justify-content-start">
                                     <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                        <img src="img/vegetable-item-4.jpg" class="img-fluid rounded" alt="">
+                                        <img src="{% static "img/vegetable-item-4.jpg" %}" class="img-fluid rounded" alt="">
                                     </div>
                                     <div>
                                         <h6 class="mb-2">Big Banana</h6>
@@ -312,7 +297,7 @@
                                             <i class="fa fa-star text-secondary"></i>
                                             <i class="fa fa-star text-secondary"></i>
                                             <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star text-secondary"></i>
                                         </div>
                                         <div class="d-flex mb-2">
                                             <h5 class="fw-bold me-2">2.99 $</h5>
@@ -322,7 +307,7 @@
                                 </div>
                                 <div class="d-flex align-items-center justify-content-start">
                                     <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                        <img src="img/vegetable-item-5.jpg" class="img-fluid rounded" alt="">
+                                        <img src="{% static "img/vegetable-item-5.jpg" %}" class="img-fluid rounded" alt="">
                                     </div>
                                     <div>
                                         <h6 class="mb-2">Big Banana</h6>
@@ -331,7 +316,7 @@
                                             <i class="fa fa-star text-secondary"></i>
                                             <i class="fa fa-star text-secondary"></i>
                                             <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star text-secondary"></i>
                                         </div>
                                         <div class="d-flex mb-2">
                                             <h5 class="fw-bold me-2">2.99 $</h5>
@@ -341,7 +326,7 @@
                                 </div>
                                 <div class="d-flex align-items-center justify-content-start">
                                     <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                        <img src="img/vegetable-item-6.jpg" class="img-fluid rounded" alt="">
+                                        <img src="{% static "img/vegetable-item-6.jpg" %}" class="img-fluid rounded" alt="">
                                     </div>
                                     <div>
                                         <h6 class="mb-2">Big Banana</h6>
@@ -350,7 +335,7 @@
                                             <i class="fa fa-star text-secondary"></i>
                                             <i class="fa fa-star text-secondary"></i>
                                             <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star text-secondary"></i>
                                         </div>
                                         <div class="d-flex mb-2">
                                             <h5 class="fw-bold me-2">2.99 $</h5>
@@ -364,7 +349,7 @@
                             </div>
                             <div class="col-lg-12">
                                 <div class="position-relative">
-                                    <img src="img/banner-fruits.jpg" class="img-fluid w-100 rounded" alt="">
+                                    <img src="{% static "img/banner-fruits.jpg" %}" class="img-fluid w-100 rounded" alt="">
                                     <div class="position-absolute" style="top: 50%; right: 10px; transform: translateY(-50%);">
                                         <h3 class="text-secondary fw-bold">Fresh <br> Fruits <br> Banner</h3>
                                     </div>
@@ -378,7 +363,7 @@
                     <div class="owl-carousel vegetable-carousel justify-content-center">
                         <div class="border border-primary rounded position-relative vesitable-item">
                             <div class="vesitable-img">
-                                <img src="img/vegetable-item-6.jpg" class="img-fluid w-100 rounded-top" alt="">
+                                <img src="{% static "img/vegetable-item-6.jpg" %}" class="img-fluid w-100 rounded-top" alt="">
                             </div>
                             <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">Vegetable</div>
                             <div class="p-4 pb-0 rounded-bottom">
@@ -392,7 +377,7 @@
                         </div>
                         <div class="border border-primary rounded position-relative vesitable-item">
                             <div class="vesitable-img">
-                                <img src="img/vegetable-item-1.jpg" class="img-fluid w-100 rounded-top" alt="">
+                                <img src="{% static "img/vegetable-item-1.jpg" %}" class="img-fluid w-100 rounded-top" alt="">
                             </div>
                             <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">Vegetable</div>
                             <div class="p-4 pb-0 rounded-bottom">
@@ -406,7 +391,7 @@
                         </div>
                         <div class="border border-primary rounded position-relative vesitable-item">
                             <div class="vesitable-img">
-                                <img src="img/vegetable-item-3.png" class="img-fluid w-100 rounded-top bg-light" alt="">
+                                <img src="{% static "img/vegetable-item-3.png" %}" class="img-fluid w-100 rounded-top bg-light" alt="">
                             </div>
                             <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">Vegetable</div>
                             <div class="p-4 pb-0 rounded-bottom">
@@ -420,7 +405,7 @@
                         </div>
                         <div class="border border-primary rounded position-relative vesitable-item">
                             <div class="vesitable-img">
-                                <img src="img/vegetable-item-4.jpg" class="img-fluid w-100 rounded-top" alt="">
+                                <img src="{% static "img/vegetable-item-4.jpg" %}" class="img-fluid w-100 rounded-top" alt="">
                             </div>
                             <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">Vegetable</div>
                             <div class="p-4 pb-0 rounded-bottom">
@@ -434,7 +419,7 @@
                         </div>
                         <div class="border border-primary rounded position-relative vesitable-item">
                             <div class="vesitable-img">
-                                <img src="img/vegetable-item-5.jpg" class="img-fluid w-100 rounded-top" alt="">
+                                <img src="{% static "img/vegetable-item-5.jpg" %}" class="img-fluid w-100 rounded-top" alt="">
                             </div>
                             <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">Vegetable</div>
                             <div class="p-4 pb-0 rounded-bottom">
@@ -448,7 +433,7 @@
                         </div>
                         <div class="border border-primary rounded position-relative vesitable-item">
                             <div class="vesitable-img">
-                                <img src="img/vegetable-item-6.jpg" class="img-fluid w-100 rounded-top" alt="">
+                                <img src="{% static "img/vegetable-item-6.jpg" %}" class="img-fluid w-100 rounded-top" alt="">
                             </div>
                             <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">Vegetable</div>
                             <div class="p-4 pb-0 rounded-bottom">
@@ -462,7 +447,7 @@
                         </div>
                         <div class="border border-primary rounded position-relative vesitable-item">
                             <div class="vesitable-img">
-                                <img src="img/vegetable-item-5.jpg" class="img-fluid w-100 rounded-top" alt="">
+                                <img src="{% static "img/vegetable-item-5.jpg" %}" class="img-fluid w-100 rounded-top" alt="">
                             </div>
                             <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">Vegetable</div>
                             <div class="p-4 pb-0 rounded-bottom">
@@ -476,7 +461,7 @@
                         </div>
                         <div class="border border-primary rounded position-relative vesitable-item">
                             <div class="vesitable-img">
-                                <img src="img/vegetable-item-6.jpg" class="img-fluid w-100 rounded-top" alt="">
+                                <img src="{% static "img/vegetable-item-6.jpg" %}" class="img-fluid w-100 rounded-top" alt="">
                             </div>
                             <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">Vegetable</div>
                             <div class="p-4 pb-0 rounded-bottom">
@@ -494,5 +479,44 @@
         </div>
         <!-- Single Product End -->
     
-
+        <!-- Add this for CSRF in AJAX -->
+        <script type="text/javascript">
+            var csrftoken = "{{ csrf_token }}";
+        </script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('.add-to-cart').click(function(e) {
+                    e.preventDefault();
+                    var product_id = $(this).data('product-id');
+                    var quantity_input = $(this).prev('.quantity').find('input');
+                    var quantity = quantity_input.length ? quantity_input.val() : 1;
+                    $.ajax({
+                        type: 'POST',
+                        url: '{% url "add_to_cart" %}',
+                        data: {
+                            product_id: product_id,
+                            quantity: quantity,
+                            csrfmiddlewaretoken: csrftoken
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                alert('Product added to cart!');
+                                // Optionally update cart icon or total here
+                            } else {
+                                if (response.message) {
+                                    alert(response.message);
+                                }
+                                if (response.redirect) {
+                                    window.location.href = response.redirect;
+                                }
+                            }
+                        },
+                        error: function() {
+                            alert('Error adding to cart');
+                        }
+                    });
+                });
+            });
+        </script>
 {% endblock content %}

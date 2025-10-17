@@ -1,62 +1,38 @@
 {% extends "shop/base.html" %}
-{% load static %} 
-{% block title %}Profile{% endblock title %}
-
+{% load static %}
+{% block title %}Create Profile{% endblock title %}
 {% block content %}
- <br><br><br><br><br><br>
- <div class="container-fluid py-5">
-            <div class="container py-5">
-                <h1 class="mb-4">Your details</h1>
-                
-                    <div class="row g-5">
-                        <div class="col-md-12 col-lg-12 col-xl-12">
-                            <div class="row">
-                                <form method='POST' action="{% url "profile" %}">
-                                    {% csrf_token %}
-                                    <div class="col-md-12 col-lg-12">
-                                    <div class="form-item w-100">
-                                        <label class="form-label my-3">First Name<sup>*</sup></label>
-                                        <input type="text" name="firstname"  class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-md-12 col-lg-12">
-                                    <div class="form-item w-100">
-                                        <label class="form-label my-3">Last Name<sup>*</sup></label>
-                                        <input type="text" name="lastname" class="form-control">
-                                    </div>
-                                </div>
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+            <h1 class="mb-4">Create Your Profile</h1>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+            <form method="post">
+                {% csrf_token %}
+                <div class="row g-5">
+                    <div class="col-md-12 col-lg-6">
+                        {{ form.as_p }}
+                        {% if form.errors %}
+                            <div class="alert alert-danger">
+                                <ul>
+                                    {% for field in form %}
+                                        {% for error in field.errors %}
+                                            <li>{{ field.label }}: {{ error }}</li>
+                                        {% endfor %}
+                                    {% endfor %}
+                                    {% for error in form.non_field_errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
                             </div>
-                            <div class="form-item">
-                                <label class="form-label my-3">Email Address<sup>*</sup></label>
-                                <input type="text" name="email" class="form-control">
-                            </div>
-                            <div class="form-item">
-                                <label class="form-label my-3">Address <sup>*</sup></label>
-                                <input type="text" name="address" class="form-control" placeholder="House Number Street Name">
-                            </div>
-                            <div class="form-item">
-                                <label class="form-label my-3">Town/City<sup>*</sup></label>
-                                <input type="text" name="city" class="form-control">
-                            </div>
-                            <div class="form-item">
-                                <label class="form-label my-3">Country<sup>*</sup></label>
-                                <input type="text" name="country" class="form-control">
-                            </div>
-                            <div class="form-item">
-                                <label class="form-label my-3">Postcode/Zip<sup>*</sup></label>
-                                <input type="text" name="postcode" class="form-control">
-                            </div>
-                            <div class="form-item">
-                                <label class="form-label my-3">Mobile Number<sup>*</sup></label>
-                                <input type="tel" name="mobile" class="form-control">
-                            </div>
-                        
-                          <br>
-                             <input class='btn btn-primary' type='submit' value='Create Account'>
-                            </form>             
-                        </div>
+                        {% endif %}
+                        <button type="submit" class="btn btn-primary">Save Profile</button>
                     </div>
                 </div>
-            </div>
-
-            {% endblock content %}
+            </form>
+        </div>
+    </div>
+{% endblock content %}
