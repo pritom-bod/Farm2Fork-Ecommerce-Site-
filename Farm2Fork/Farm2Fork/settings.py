@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'Farm2Fork.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default=f"postgresql://pritom:ZEcXHj0xx7epSVnqjZMIK6VFr3ARtBKX@dpg-d3phq60dl3ps73b6ku1g-a/farm2forkdb",
+        default=f"postgresql://pritom:ZEcXHj0xx7epSVnqjZMIK6VFr3ARtBKX@dpg-d3phq60dl3ps73b6ku1g-a.oregon-postgres.render.com/farm2forkdb",
         conn_max_age=600,
         ssl_require=False
     )
