@@ -63,7 +63,7 @@ class UserProfile(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField(unique=True)
-    number = models.IntegerField(unique=True)
+    number = models.BigIntegerField(unique=True)
     address = models.CharField(max_length=1000)
     city = models.CharField(max_length=50)
     country = models.CharField(max_length=50, default='Bangladesh')

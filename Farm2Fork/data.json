@@ -1,0 +1,1051 @@
+[
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2025-06-12T06:15:07.300Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "1",
+    "object_repr": "1",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2025-06-12T06:28:36.928Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "2",
+    "object_repr": "2",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2025-06-12T06:29:32.946Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "3",
+    "object_repr": "3",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2025-06-12T06:30:01.557Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "4",
+    "object_repr": "4",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 5,
+  "fields": {
+    "action_time": "2025-06-12T06:31:06.027Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "5",
+    "object_repr": "5",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 6,
+  "fields": {
+    "action_time": "2025-06-12T06:32:01.306Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "6",
+    "object_repr": "6",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 7,
+  "fields": {
+    "action_time": "2025-06-12T07:49:50.249Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "7",
+    "object_repr": "7",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 8,
+  "fields": {
+    "action_time": "2025-06-15T20:51:22.486Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "1",
+    "object_repr": "UserProfile object (1)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 9,
+  "fields": {
+    "action_time": "2025-06-17T14:49:14.247Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "8",
+    "object_repr": "8",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 10,
+  "fields": {
+    "action_time": "2025-06-17T14:50:09.505Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "9",
+    "object_repr": "9",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 11,
+  "fields": {
+    "action_time": "2025-06-17T14:53:38.845Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "10",
+    "object_repr": "10",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 12,
+  "fields": {
+    "action_time": "2025-06-17T14:55:29.722Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "11",
+    "object_repr": "11",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 13,
+  "fields": {
+    "action_time": "2025-06-17T14:56:02.737Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "11",
+    "object_repr": "11",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 14,
+  "fields": {
+    "action_time": "2025-06-17T14:57:11.482Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "12",
+    "object_repr": "12",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 15,
+  "fields": {
+    "action_time": "2025-10-17T22:36:24.567Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "13",
+    "object_repr": "13",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$P2WgiieB3FxNr4gkkPAbrk$wfCJQhmMxocazDmYd//jwLVLelZwenpA3OMhVKcozMk=",
+    "last_login": "2025-10-17T22:27:32.912Z",
+    "is_superuser": true,
+    "username": "pritom",
+    "first_name": "",
+    "last_name": "",
+    "email": "pritomsarker406@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-06-12T05:55:29.472Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$Omj2HFmnmsDUBOAjPMA5e5$4Lb2FN5YV4lMQCwx00cvM3tPyQaNeeqRh7mVWY58ylw=",
+    "last_login": "2025-06-13T16:44:00.662Z",
+    "is_superuser": false,
+    "username": "aaa",
+    "first_name": "",
+    "last_name": "",
+    "email": "aaa@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-06-13T16:08:33.812Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$sNS2Wxl26rdUStaT3oRppM$lMnExyDnQ1GheHnDcNFov1PwoVgBxM2yc9A4SRQL7C8=",
+    "last_login": "2025-06-20T20:08:49.174Z",
+    "is_superuser": false,
+    "username": "MizanS",
+    "first_name": "",
+    "last_name": "",
+    "email": "mizan435@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-06-20T20:08:25.627Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$RggWovxxCmPLnhCm73g3ov$0jI5uVDQyKMZ+bf0GjIOmLTidVyL2vu3hVbmicS3WTk=",
+    "last_login": "2025-06-27T07:14:35.454Z",
+    "is_superuser": false,
+    "username": "pritomrndm",
+    "first_name": "",
+    "last_name": "",
+    "email": "pritomrndm@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-06-27T03:59:25.375Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$VvEeaW2kcmYfc9xX7Q9ZEG$50t1l5hs2TWlOLLT5oJJ5XN8BwzNE3rkjUYJm/jkvgY=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "mamprit",
+    "first_name": "",
+    "last_name": "",
+    "email": "pritomrndm@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-17T16:12:07.600Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 6,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$DLiNNyVSwqUsfzDpOxdRsl$incDjUH64ExYRxDiNpDIFrcK0jm39N2wjR5kMjFQKJM=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "mampritt",
+    "first_name": "",
+    "last_name": "",
+    "email": "pritomrndm@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-17T16:17:40.810Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 7,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$VVoyzJ8VTpXFJGovDC9nDM$fhq+yaghw0Eu0eJYL2skhAqvhfOgQAzRkIgrBvhnDms=",
+    "last_login": "2025-10-17T16:22:16.337Z",
+    "is_superuser": false,
+    "username": "rajib99",
+    "first_name": "",
+    "last_name": "",
+    "email": "pritomrndm@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-17T16:21:28.190Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 8,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$rJOMEcIpcGIUhhB5XUZfnd$tjsa/sjwGiBLnoLx/G8DjNUAlNHv3KivcN23+bT4fZY=",
+    "last_login": "2025-10-17T16:33:10.462Z",
+    "is_superuser": false,
+    "username": "pritom02",
+    "first_name": "",
+    "last_name": "",
+    "email": "pritomsarker406@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-17T16:32:49.023Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 9,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$8jaIGJ9vqrfYM86go9CMtA$Wsa+lVypY5WSi1N4jhiot4VtkKkmtP6rIikmcwlk5qE=",
+    "last_login": "2025-10-17T22:05:35.634Z",
+    "is_superuser": false,
+    "username": "mamprit1",
+    "first_name": "",
+    "last_name": "",
+    "email": "pritomrndm@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-17T22:05:12.764Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "axrmvace0uelxk0ppq7bbn82mm8yyc2d",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQAP-FsyHCysuj935Ds-yCVA0kpT0Z_92Q9KDXmcm8xYz7Vua9p3VeWFwFiNMvi0jPVIfgB9Z7k9Tqti5RjkQetsupcXrdjvZvULCXsc0ALlBgDpyzVsSZrI0K0SoMCN5rbWJQhpiV82AuCUA7o0KCszEkPl_3Ejet:1uSi2b:bwap8Bl3TQ6UIR_k_hFUkXTQADXSXzRn4ISSZQus0gk",
+    "expire_date": "2025-07-04T20:08:49.248Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "d1qlo404wpzst8d2k22cyfyvf9lf7x6i",
+  "fields": {
+    "session_data": "e30:1v9s43:rg7ahbnp36BEdhy8_UKJpqZvIgf2BTeDbkKhWUR9mE0",
+    "expire_date": "2025-10-31T21:32:43.028Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ffwyu8j70kzojkqscuczq2e3n2c0hrk3",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hBgsAWX7nsGMsxMpWpoUtqV8e7apAvd_vfef6mE21rS1mRJE6uLsur0u2Wkh9Qd8B3rbdY013WZst4VfdCmh5nleT3cv4OCrXxriWNvfRh7zuzIOYO2OyMgSPaGDBOaztkYnI9iLGRgAPDBRLBIgqTeH-HtN6o:1uQEMv:OhkES-AjIl-Vvh2BD_N6ZsXK4fEQeBDywbzXYla8w18",
+    "expire_date": "2025-06-28T00:03:33.098Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "jd9smnjpiq5t9ubpkwta4yaj0rjmazgl",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hBKoXRcuvcMzQwzSNVAUtqV8e7apAvd_vfef6kJtzVPW5NlmlmdVadOvxthfEjZAd-x3KqOtazLTHpX9EGbvlaW5-Vw_w4ytvytE3gOtncOCJJNrvfJO0IKMAiC4BjFhg6DgREGFgKgYMlE9mCNCaTeH-cON_I:1v9sv6:mfxhU6yCM2Yo3UaAQ-FlNzhWSVrbGqtBcLzUe_FktME",
+    "expire_date": "2025-10-31T22:27:32.920Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ow2m8of68sx9esqjrvuk7jzz1bti01ya",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSHIG5fu-w1kYAapGkhKuzL-uzbpQrf3nHNfLMK21rgNWuKM7MI0O_1uCfKD2g7wDu3Wee5tXebEd4UfdPCpIz2vh_t3UGHUb02UgdAYX6x1YAoVFzwIqUA5aZKmsyKwOqBQGpS3RpK3GdARlBBEYu8PA7A4dw:1uV3IB:gj0Yeqco0B9w7woR7qd9FPOxJVpq8OGZNpX_CzLUt94",
+    "expire_date": "2025-07-11T07:14:35.506Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "r3xqezt7y32rnxy2ainsxjx74at8xxbd",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hBKoXRcuvcMzQwzSNVAUtqV8e7apAvd_vfef6kJtzVPW5NlmlmdVadOvxthfEjZAd-x3KqOtazLTHpX9EGbvlaW5-Vw_w4ytvytE3gOtncOCJJNrvfJO0IKMAiC4BjFhg6DgREGFgKgYMlE9mCNCaTeH-cON_I:1uTHnC:oc_jcZ4xBVFPRUwRpSrLTDtZnhFH0D5guKG1kba3N-g",
+    "expire_date": "2025-07-06T10:19:18.459Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "u9qgwx9dofel4sw00heq2yriee7lxuoh",
+  "fields": {
+    "session_data": "e30:1uV3Hn:gXOMA_Djmr20VGF4WbblOF0NRe3fLdvbcXHhgwL45W4",
+    "expire_date": "2025-07-11T07:14:11.686Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ua1yr1sj7knaovxj04fh8l570scz7p9g",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hDoAFaX7j0DGWYYqRpISrsy3l2bdKHb_977LxVxXUpce57jxOqsrDr8bgnpkesG-I711jS1usxT0puid9r1tXF-Xnb376BgL986EIwDix2NF2YSFoeQXbDoiQJ7TAYsHAmcAXGDMAIHQgc-scsnUu8PBNU43A:1uRYwU:EFBZ02odq6nb2nrFsWxhGp1Fj54PXRvl7CZSHhqHQDc",
+    "expire_date": "2025-07-01T16:13:46.228Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "vnmhzsak8zs5n80hrgxlgcs0ak9yu16w",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hBgsAWX7nsGMsxMpWpoUtqV8e7apAvd_vfef6mE21rS1mRJE6uLsur0u2Wkh9Qd8B3rbdY013WZst4VfdCmh5nleT3cv4OCrXxriWNvfRh7zuzIOYO2OyMgSPaGDBOaztkYnI9iLGRgAPDBRLBIgqTeH-HtN6o:1uPaux:rkAoekFYcJlKP_MDOuLODmimZQcWyq1hvuXsnTxOWXA",
+    "expire_date": "2025-06-26T05:56:03.582Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 1,
+  "fields": {
+    "title": "Mango",
+    "regular_price": 50.0,
+    "discounted_price": 45.0,
+    "descriptions": "The mango is inextricably connected with the folklore and religious ceremonies of India. Buddha himself was presented with a mango grove that he might find repose in its grateful shade. The name mango, by which the fruit is known in English- and Spanish-speaking countries, is most likely derived from the Malayam manna, which the Portuguese adopted as manga when they came to Kerala in 1498 for the spice trade. Probably because of the difficulty in transporting seeds (they retain their viability a short time only), the tree was not introduced into the Western Hemisphere until about 1700, when it was planted in Brazil; it reached the West Indies about 1740.",
+    "category": "F",
+    "product_image": "product_image/mango.jpg",
+    "tags": []
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 2,
+  "fields": {
+    "title": "Bottle gourd Leeps",
+    "regular_price": 70.0,
+    "discounted_price": 60.0,
+    "descriptions": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    "category": "V",
+    "product_image": "product_image/Bottle_gourd_Leep.jpg",
+    "tags": []
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 3,
+  "fields": {
+    "title": "Fresh Mutton",
+    "regular_price": 1200.0,
+    "discounted_price": 1070.0,
+    "descriptions": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    "category": "M",
+    "product_image": "product_image/mutton-2.jpeg",
+    "tags": []
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 4,
+  "fields": {
+    "title": "Bit Root",
+    "regular_price": 60.0,
+    "discounted_price": 50.0,
+    "descriptions": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    "category": "V",
+    "product_image": "product_image/Bitroot.png",
+    "tags": []
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 5,
+  "fields": {
+    "title": "Almond",
+    "regular_price": 1200.0,
+    "discounted_price": 1000.0,
+    "descriptions": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    "category": "DF",
+    "product_image": "product_image/almond.jpg",
+    "tags": []
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 6,
+  "fields": {
+    "title": "Cashew Nut",
+    "regular_price": 1000.0,
+    "discounted_price": 900.0,
+    "descriptions": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    "category": "DF",
+    "product_image": "product_image/CashewNut.jpeg",
+    "tags": []
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 7,
+  "fields": {
+    "title": "Mutton",
+    "regular_price": 1000.0,
+    "discounted_price": 850.0,
+    "descriptions": "This is high queality mutton . This is fully fresh and well mentained meat for out valuable customers. It fresh and live peacefully. Good luck",
+    "category": "M",
+    "product_image": "product_image/mutton-1.jpeg",
+    "tags": []
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 8,
+  "fields": {
+    "title": "Chicken",
+    "regular_price": 450.0,
+    "discounted_price": 350.0,
+    "descriptions": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    "category": "M",
+    "product_image": "product_image/chicken.jpg",
+    "tags": []
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 9,
+  "fields": {
+    "title": "Bread",
+    "regular_price": 55.0,
+    "discounted_price": 47.0,
+    "descriptions": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    "category": "B",
+    "product_image": "product_image/bread.jpeg",
+    "tags": []
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 10,
+  "fields": {
+    "title": "Fish-Ilish",
+    "regular_price": 3000.0,
+    "discounted_price": 2700.0,
+    "descriptions": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    "category": "FH",
+    "product_image": "product_image/ilish.jpeg",
+    "tags": []
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 12,
+  "fields": {
+    "title": "Carrot",
+    "regular_price": 70.0,
+    "discounted_price": 62.0,
+    "descriptions": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+    "category": "V",
+    "product_image": "product_image/gajor_TfFkASp.jpeg",
+    "tags": []
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 13,
+  "fields": {
+    "title": "Tomato",
+    "regular_price": 50.0,
+    "discounted_price": 45.0,
+    "descriptions": "This is a organic tomato",
+    "category": "V",
+    "product_image": "product_image/vegetable-item-1.jpg",
+    "tags": []
+  }
+},
+{
+  "model": "shop.cart",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "created_at": "2025-10-15T04:13:28.720Z"
+  }
+},
+{
+  "model": "shop.cart",
+  "pk": 2,
+  "fields": {
+    "user": 7,
+    "created_at": "2025-10-17T16:23:13.748Z"
+  }
+},
+{
+  "model": "shop.cart",
+  "pk": 3,
+  "fields": {
+    "user": 8,
+    "created_at": "2025-10-17T16:33:26.041Z"
+  }
+},
+{
+  "model": "shop.cartitem",
+  "pk": 28,
+  "fields": {
+    "cart": 2,
+    "product": 8,
+    "quantity": 1
+  }
+},
+{
+  "model": "shop.cartitem",
+  "pk": 29,
+  "fields": {
+    "cart": 2,
+    "product": 8,
+    "quantity": 1
+  }
+},
+{
+  "model": "shop.cartitem",
+  "pk": 50,
+  "fields": {
+    "cart": 3,
+    "product": 7,
+    "quantity": 1
+  }
+},
+{
+  "model": "shop.userprofile",
+  "pk": 1,
+  "fields": {
+    "user": null,
+    "first_name": "Royes",
+    "last_name": "sany",
+    "email": "sany@gmail.com",
+    "number": 49,
+    "address": "kajipara,Barishal,Bangladesh",
+    "city": "Barishal",
+    "country": "Bangladesh",
+    "postcode": 8200
+  }
+},
+{
+  "model": "shop.userprofile",
+  "pk": 2,
+  "fields": {
+    "user": null,
+    "first_name": "Pritom",
+    "last_name": "Sarker",
+    "email": "pritom@gmail.com",
+    "number": 1303458843,
+    "address": "Barishal, Word no-26, Horinafulia, Horinafulia road, Shiali bari.",
+    "city": "Barishal",
+    "country": "Bangladesh",
+    "postcode": 8200
+  }
+},
+{
+  "model": "shop.userprofile",
+  "pk": 3,
+  "fields": {
+    "user": 1,
+    "first_name": "Priom",
+    "last_name": "Sarker",
+    "email": "pritomsarker406@gmail.com",
+    "number": 1303458845,
+    "address": "Motijheel AGB Colony",
+    "city": "Dhaka",
+    "country": "Bangladesh",
+    "postcode": 1000
+  }
+},
+{
+  "model": "shop.userprofile",
+  "pk": 4,
+  "fields": {
+    "user": 7,
+    "first_name": "Rajib",
+    "last_name": "Roy",
+    "email": "rajibroy@gmail.com",
+    "number": 16777777777,
+    "address": "Motijheel AGB Colony",
+    "city": "Dhaka",
+    "country": "Bangladesh",
+    "postcode": 1000
+  }
+},
+{
+  "model": "shop.userprofile",
+  "pk": 5,
+  "fields": {
+    "user": 8,
+    "first_name": "Rajib",
+    "last_name": "Roy",
+    "email": "rajibroywwd@gmail.com",
+    "number": 234234,
+    "address": "kajipara,Barishal,Bangladesh",
+    "city": "Dhaka",
+    "country": "Bangladesh",
+    "postcode": 1000
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "total_amount": 2886.0,
+    "shipping_address": "agb colony motijheel, dhaka",
+    "payment_method": "Credit Card",
+    "status": "Pending",
+    "created_at": "2025-10-17T15:42:24.683Z"
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 2,
+  "fields": {
+    "user": 1,
+    "total_amount": 2260.0,
+    "shipping_address": "motijheel,dhaka",
+    "payment_method": "Cash on Delivery",
+    "status": "Pending",
+    "created_at": "2025-10-17T15:48:14.870Z"
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 3,
+  "fields": {
+    "user": 1,
+    "total_amount": 120.0,
+    "shipping_address": "sacsac",
+    "payment_method": "Credit Card",
+    "status": "Pending",
+    "created_at": "2025-10-17T15:55:59.717Z"
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 4,
+  "fields": {
+    "user": 1,
+    "total_amount": 2700.0,
+    "shipping_address": "barishal, tiakhaili",
+    "payment_method": "Cash on Delivery",
+    "status": "Pending",
+    "created_at": "2025-10-17T15:57:35.535Z"
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 5,
+  "fields": {
+    "user": 1,
+    "total_amount": 60.0,
+    "shipping_address": "dfsdaf",
+    "payment_method": "Credit Card",
+    "status": "Pending",
+    "created_at": "2025-10-17T16:08:55.305Z"
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 6,
+  "fields": {
+    "user": 7,
+    "total_amount": 350.0,
+    "shipping_address": "Motijheel",
+    "payment_method": "Credit Card",
+    "status": "Pending",
+    "created_at": "2025-10-17T16:23:42.972Z"
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 7,
+  "fields": {
+    "user": 1,
+    "total_amount": 1070.0,
+    "shipping_address": "barishal",
+    "payment_method": "Cash on Delivery",
+    "status": "Pending",
+    "created_at": "2025-10-17T16:26:29.708Z"
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 8,
+  "fields": {
+    "user": 1,
+    "total_amount": 700.0,
+    "shipping_address": "sadfs",
+    "payment_method": "Credit Card",
+    "status": "Pending",
+    "created_at": "2025-10-17T16:27:29.540Z"
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 9,
+  "fields": {
+    "user": 8,
+    "total_amount": 105.0,
+    "shipping_address": "asssdf",
+    "payment_method": "Credit Card",
+    "status": "Pending",
+    "created_at": "2025-10-17T17:16:14.853Z"
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 10,
+  "fields": {
+    "user": 1,
+    "total_amount": 137.0,
+    "shipping_address": "zxvvcxv",
+    "payment_method": "PayPal",
+    "status": "Pending",
+    "created_at": "2025-10-17T22:37:48.996Z"
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 1,
+  "fields": {
+    "order": 1,
+    "product": 9,
+    "quantity": 3,
+    "price": 47.0
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 2,
+  "fields": {
+    "order": 1,
+    "product": 10,
+    "quantity": 1,
+    "price": 2700.0
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 3,
+  "fields": {
+    "order": 1,
+    "product": 1,
+    "quantity": 1,
+    "price": 45.0
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 4,
+  "fields": {
+    "order": 2,
+    "product": 2,
+    "quantity": 1,
+    "price": 60.0
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 5,
+  "fields": {
+    "order": 2,
+    "product": 2,
+    "quantity": 1,
+    "price": 60.0
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 6,
+  "fields": {
+    "order": 2,
+    "product": 3,
+    "quantity": 1,
+    "price": 1070.0
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 7,
+  "fields": {
+    "order": 2,
+    "product": 3,
+    "quantity": 1,
+    "price": 1070.0
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 8,
+  "fields": {
+    "order": 3,
+    "product": 2,
+    "quantity": 2,
+    "price": 60.0
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 9,
+  "fields": {
+    "order": 4,
+    "product": 10,
+    "quantity": 1,
+    "price": 2700.0
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 10,
+  "fields": {
+    "order": 5,
+    "product": 2,
+    "quantity": 1,
+    "price": 60.0
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 11,
+  "fields": {
+    "order": 6,
+    "product": 8,
+    "quantity": 1,
+    "price": 350.0
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 12,
+  "fields": {
+    "order": 7,
+    "product": 3,
+    "quantity": 1,
+    "price": 1070.0
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 13,
+  "fields": {
+    "order": 8,
+    "product": 8,
+    "quantity": 2,
+    "price": 350.0
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 14,
+  "fields": {
+    "order": 9,
+    "product": 1,
+    "quantity": 1,
+    "price": 45.0
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 15,
+  "fields": {
+    "order": 9,
+    "product": 2,
+    "quantity": 1,
+    "price": 60.0
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 16,
+  "fields": {
+    "order": 10,
+    "product": 9,
+    "quantity": 1,
+    "price": 47.0
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 17,
+  "fields": {
+    "order": 10,
+    "product": 13,
+    "quantity": 2,
+    "price": 45.0
+  }
+},
+{
+  "model": "shop.review",
+  "pk": 1,
+  "fields": {
+    "product": 3,
+    "user": 1,
+    "rating": 4,
+    "comment": "good product",
+    "order_item": null,
+    "created_at": "2025-10-17T15:52:25.770Z"
+  }
+},
+{
+  "model": "shop.review",
+  "pk": 2,
+  "fields": {
+    "product": 8,
+    "user": 7,
+    "rating": 5,
+    "comment": "very good",
+    "order_item": null,
+    "created_at": "2025-10-17T16:24:08.815Z"
+  }
+},
+{
+  "model": "shop.review",
+  "pk": 3,
+  "fields": {
+    "product": 8,
+    "user": 1,
+    "rating": 4,
+    "comment": "nice",
+    "order_item": null,
+    "created_at": "2025-10-17T16:27:46.242Z"
+  }
+},
+{
+  "model": "shop.review",
+  "pk": 4,
+  "fields": {
+    "product": 13,
+    "user": 1,
+    "rating": 3,
+    "comment": "ok ok",
+    "order_item": null,
+    "created_at": "2025-10-17T22:38:34.266Z"
+  }
+}
+]
