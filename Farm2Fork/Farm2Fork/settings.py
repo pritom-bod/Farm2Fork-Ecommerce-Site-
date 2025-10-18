@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -75,15 +77,13 @@ WSGI_APPLICATION = 'Farm2Fork.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'farm2forkdb',         # your database name
-        'USER': 'postgres',         # your PostgreSQL username
-        'PASSWORD': 'pritom406', # your PostgreSQL password
-        'HOST': 'localhost',        # or your DB host
-        'PORT': '5432',             # default port
-    }
+    'default': dj_database_url.config(
+        default=f"postgresql://postgres:pritom406@localhost:5432/farm2forkdb",
+        conn_max_age=600,
+        ssl_require=False
+    )
 }
 
 # Password validation
