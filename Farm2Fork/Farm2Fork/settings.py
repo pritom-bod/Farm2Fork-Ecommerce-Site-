@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-mw6me*=k34gmiw5dw5l!@9l1_jhuj*kjwre9o2w&$5shm*m&p^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["https://farm2fork-pritom.onrender.com/", '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = [ 'farm2fork-pritom.onrender.com', '127.0.0.1', 'localhost']
 
 
 # Application definition
