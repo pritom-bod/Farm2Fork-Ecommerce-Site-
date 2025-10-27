@@ -13,6 +13,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap" rel="stylesheet"> 
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fontisto@latest/css/fontisto/all.min.css">
 
         <!-- Icon Font Stylesheet -->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
@@ -63,25 +64,31 @@
                             <a href="{% url "home" %}" class="nav-item nav-link active">Home</a>
                             <a href="{% url "shop" %}" class="nav-item nav-link">Shop</a>
                             {% comment %} <a href="{% url "productdetails" %}" class="nav-item nav-link">Shop Detail</a> {% endcomment %}
-                            <div class="nav-item dropdown">
+                            {% comment %} <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">
                                     
                                     <a href="{% url "404-page" %}" class="dropdown-item">404 Page</a>
                                 </div>
-                            </div>
+                            </div> {% endcomment %}
                             <a href="{% url "contact" %}" class="nav-item nav-link">Contact</a>
                             <a href="{% url "cart" %}" class="nav-item nav-link">Cart</a>
                             <!-- Any checkout button on home page -->
-                            <li class="nav-item">
-  <a href="{% url 'multivendor:seller_login' %}" class="nav-link btn btn-outline-primary">Become a Seller</a>
-</li>
-
+                            
 
                             <a href="{% url "testimonial" %}" class="nav-item nav-link">Testimonial</a>
+                           
+
                         </div>
                         <div class="d-flex m-3 me-0">
-                            <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
+                            
+                            <li class="nav-item">
+  <a href="{% url 'multivendor:seller_login' %}" class="nav-link d-flex align-items-center">
+    <span class="me-2" style="font-weight:600; color:#198754;">Become a Seller</span>
+    <i class="fas fa-store" style="color: #81c408; font-size: 2em;"></i>
+  </a>
+</li>
+
                             <!-- shop/templates/shop/base.html -->
 <!-- Find the cart icon/link in your navigation and change it to: -->
 

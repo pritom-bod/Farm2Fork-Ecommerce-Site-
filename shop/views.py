@@ -39,6 +39,8 @@ def get_cart(request):
     return None
 
 
+
+
 # ============================================================
 # HOME & PRODUCT VIEWS
 # ============================================================
@@ -262,6 +264,7 @@ class ProductDetails(View):
             messages.error(request, "An error occurred while submitting your review.")
             return redirect('product_detail', pk=pk)
 
+#Product search system
 
 # ============================================================
 # CART VIEWS
