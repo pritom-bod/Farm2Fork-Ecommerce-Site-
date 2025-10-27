@@ -1,0 +1,145 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block title %}Order Confirmation{% endblock title %}
+{% block content %}
+<!-- Order Confirmation Header -->
+<div class="container-fluid page-header py-5" style="background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('{% static "img/cart-page-header-img.jpg" %}');">
+    <h1 class="text-center text-white display-6">Order Confirmed!</h1>
+</div>
+
+<!-- Order Confirmation Page Start -->
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <!-- Success Message -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-8 text-center">
+                <div class="alert alert-success border-0 shadow-sm" role="alert">
+                    <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+                    <h3 class="alert-heading text-success mb-3">Thank You For Your Order!</h3>
+                    <p class="mb-2">Your order has been successfully placed.</p>
+                    <hr>
+                    <p class="mb-0"><strong>Order Number:</strong> <span class="text-primary">{{ order.order_number }}</span></p>
+                    <p class="mb-0 small text-muted">A confirmation email has been sent to {{ order.email }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Order Details Section -->
+            <div class="col-lg-8 mb-4">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="fas fa-shopping-bag me-2"></i>Order Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Name</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in order_items %}
+                                    <tr>
+                                        <td>
+                                            <img src="{{ item.product.product_image.url }}" class="img-fluid rounded" style="width: 60px; height: 60px; object-fit: cover;" alt="{{ item.product.title }}">
+                                        </td>
+                                        <td class="align-middle">{{ item.product.title }}</td>
+                                        <td class="align-middle">${{ item.price }}</td>
+                                        <td class="align-middle">{{ item.quantity }}</td>
+                                        <td class="align-middle"><strong>${{ item.subtotal }}</strong></td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Summary Sidebar -->
+            <div class="col-lg-4">
+                <!-- Order Summary Card -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0"><i class="fas fa-calculator me-2"></i>Order Summary</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Subtotal:</span>
+                            <strong>${{ order.subtotal }}</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Shipping ({{ order.get_shipping_method_display }}):</span>
+                            <strong>${{ order.shipping_cost }}</strong>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between mb-0">
+                            <h5>Total:</h5>
+                            <h5 class="text-primary">${{ order.total }}</h5>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shipping Information Card -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0"><i class="fas fa-truck me-2"></i>Shipping Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-1"><strong>{{ order.first_name }} {{ order.last_name }}</strong></p>
+                        <p class="mb-1">{{ order.address }}</p>
+                        <p class="mb-1">{{ order.city }}, {{ order.postcode }}</p>
+                        <p class="mb-1">{{ order.country }}</p>
+                        <hr>
+                        <p class="mb-1"><i class="fas fa-phone me-2"></i>{{ order.phone }}</p>
+                        <p class="mb-0"><i class="fas fa-envelope me-2"></i>{{ order.email }}</p>
+                    </div>
+                </div>
+
+                <!-- Payment Method Card -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="mb-0"><i class="fas fa-credit-card me-2"></i>Payment Method</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-0"><strong>{{ order.get_payment_method_display }}</strong></p>
+                        {% if order.payment_method == 'BANK' %}
+                        <p class="small text-muted mt-2 mb-0">Please use order number <strong>{{ order.order_number }}</strong> as payment reference.</p>
+                        {% elif order.payment_method == 'COD' %}
+                        <p class="small text-muted mt-2 mb-0">Pay with cash upon delivery.</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Order Status Card -->
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-secondary text-white">
+                        <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Order Status</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-1"><strong>Status:</strong> <span class="badge bg-warning text-dark">{{ order.get_status_display }}</span></p>
+                        <p class="mb-0 small text-muted">Order Date: {{ order.created_at|date:"F d, Y - h:i A" }}</p>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="d-grid gap-2 mt-4">
+                    <a href="{% url 'profile' %}" class="btn btn-primary">
+                        <i class="fas fa-user me-2"></i>View My Orders
+                    </a>
+                    <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-shopping-cart me-2"></i>Continue Shopping
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Order Confirmation Page End -->
+{% endblock content %}

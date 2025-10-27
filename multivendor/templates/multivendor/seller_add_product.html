@@ -1,0 +1,49 @@
+{% extends "shop/base.html" %}
+{% block title %}Add New Product{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <br><br><br><br><br><br>
+  <div class="row justify-content-center">
+    <div class="col-md-7 bg-white shadow rounded p-4">
+      <h3 class="mb-4">Add Product to Your Store</h3>
+      <form method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="mb-3">
+          <label class="form-label" for="id_title">Title</label>
+          {{ form.title }}
+        </div>
+        <div class="mb-3 row">
+          <div class="col-md-6">
+            <label class="form-label">Regular Price</label>
+            {{ form.regular_price }}
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Discounted Price</label>
+            {{ form.discounted_price }}
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Description</label>
+          {{ form.descriptions }}
+        </div>
+        <div class="mb-3 row">
+          <div class="col-md-6">
+            <label class="form-label">Category</label>
+            {{ form.category }}
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Tags</label>
+            {{ form.tags }}
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Product Image</label>
+          {{ form.product_image }}
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Add Product</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

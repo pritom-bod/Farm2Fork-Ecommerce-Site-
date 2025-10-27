@@ -1,0 +1,371 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block title %}{{ product.title }} - Product Details{% endblock title %}
+
+{% block content %}
+<!-- Single Page Header start -->
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6">Shop Detail</h1>
+    <ol class="breadcrumb justify-content-center mb-0">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'shop' %}">Pages</a></li>
+        <li class="breadcrumb-item active text-white">Shop Detail</li>
+    </ol>
+</div>
+<!-- Single Page Header End -->
+
+<!-- Messages -->
+{% if messages %}
+<div class="container mt-3">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Single Product Start -->
+<div class="container-fluid py-5 mt-5">
+    <div class="container py-5">
+        <div class="row g-4 mb-5">
+            <div class="col-lg-8 col-xl-9">
+                <div class="row g-4">
+                    <!-- Product Image -->
+                    <div class="col-lg-6">
+                        <div class="border rounded">
+                            <img src="{{ product.product_image.url }}" class="img-fluid rounded" alt="{{ product.title }}">
+                        </div>
+                    </div>
+
+                    <!-- Product Info -->
+                    <div class="col-lg-6">
+                        <h4 class="fw-bold mb-3">{{ product.title }}</h4>
+                        <p class="mb-3">Category: <span class="text-primary">{{ product.get_category_display }}</span></p>
+                        <h5 class="fw-bold mb-3">{{ product.discounted_price }}৳</h5>
+                        
+                        <!-- Rating -->
+                        <div class="d-flex mb-4">
+                            {% if product.average_rating > 0 %}
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= product.average_rating %}
+                                        <i class="fa fa-star text-secondary"></i>
+                                    {% else %}
+                                        <i class="fa fa-star"></i>
+                                    {% endif %}
+                                {% endfor %}
+                                <span class="ms-2">({{ product.total_reviews }} reviews)</span>
+                            {% else %}
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <span class="ms-2">(No reviews)</span>
+                            {% endif %}
+                        </div>
+
+                        <p class="mb-4">{{ product.descriptions|truncatewords:30 }}</p>
+
+                        <!-- Add to Cart Form -->
+                        <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                            {% csrf_token %}
+                            <div class="input-group quantity mb-5" style="width: 150px;">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-sm btn-minus rounded-circle bg-light border">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                                <input type="number" name="quantity" class="form-control form-control-sm text-center border-0" value="1" min="1">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-sm btn-plus rounded-circle bg-light border">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            {% if user.is_authenticated %}
+                                <button type="submit" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
+                                    <i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
+                                </button>
+                            {% else %}
+                                <a href="{% url 'login' %}?next={{ request.path }}" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
+                                    <i class="fa fa-sign-in-alt me-2 text-primary"></i> Login to Add to Cart
+                                </a>
+                            {% endif %}
+                        </form>
+                    </div>
+
+                    <!-- Description & Reviews Tabs -->
+                    <div class="col-lg-12">
+                        <nav>
+                            <div class="nav nav-tabs mb-3">
+                                <button class="nav-link active border-white border-bottom-0" type="button" role="tab"
+                                    id="nav-about-tab" data-bs-toggle="tab" data-bs-target="#nav-about"
+                                    aria-controls="nav-about" aria-selected="true">Description</button>
+                                <button class="nav-link border-white border-bottom-0" type="button" role="tab"
+                                    id="nav-mission-tab" data-bs-toggle="tab" data-bs-target="#nav-mission"
+                                    aria-controls="nav-mission" aria-selected="false">Reviews {% if reviews %}({{ reviews.count }}){% endif %}</button>
+                            </div>
+                        </nav>
+
+                        <div class="tab-content mb-5">
+                            <!-- Description Tab -->
+                            <div class="tab-pane active" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
+                                <p>{{ product.descriptions }}</p>
+                                
+                                <div class="px-2 mt-4">
+                                    <div class="row g-4">
+                                        <div class="col-6">
+                                            <div class="row bg-light align-items-center text-center justify-content-center py-2">
+                                                <div class="col-6">
+                                                    <p class="mb-0">Category</p>
+                                                </div>
+                                                <div class="col-6">
+                                                    <p class="mb-0">{{ product.get_category_display }}</p>
+                                                </div>
+                                            </div>
+                                            <div class="row text-center align-items-center justify-content-center py-2">
+                                                <div class="col-6">
+                                                    <p class="mb-0">Quality</p>
+                                                </div>
+                                                <div class="col-6">
+                                                    <p class="mb-0">Premium</p>
+                                                </div>
+                                            </div>
+                                            <div class="row bg-light text-center align-items-center justify-content-center py-2">
+                                                <div class="col-6">
+                                                    <p class="mb-0">Rating</p>
+                                                </div>
+                                                <div class="col-6">
+                                                    <p class="mb-0">{{ product.average_rating|floatformat:1 }}/5.0</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Reviews Tab -->
+                            <div class="tab-pane" id="nav-mission" role="tabpanel" aria-labelledby="nav-mission-tab">
+                                {% if reviews %}
+                                    {% for review in reviews %}
+                                    <div class="d-flex mb-4">
+                                        <div class="rounded-circle bg-light p-3 me-3" style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fa fa-user fa-2x text-secondary"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <p class="mb-2" style="font-size: 14px;">{{ review.created_at|date:"F d, Y" }}</p>
+                                            <div class="d-flex justify-content-between">
+                                                <h5>{{ review.user.username }}</h5>
+                                                <div class="d-flex mb-3">
+                                                    {% for i in "12345" %}
+                                                        {% if forloop.counter <= review.rating %}
+                                                            <i class="fa fa-star text-secondary"></i>
+                                                        {% else %}
+                                                            <i class="fa fa-star"></i>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                            <p>{{ review.review }}</p>
+                                            <span class="badge bg-success"><i class="fa fa-check-circle me-1"></i> Verified Purchase</span>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <p class="text-muted">No reviews yet. Be the first to review this product!</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Review Form -->
+                    {% if user.is_authenticated and can_review and not user_has_reviewed %}
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        <h4 class="mb-5 fw-bold">Leave a Review</h4>
+                        <div class="row g-4">
+                            <div class="col-lg-12">
+                                <div class="d-flex justify-content-between py-3 mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <p class="mb-0 me-3">Please rate:</p>
+                                        <div class="rating-stars">
+                                            <input type="radio" name="rating" value="5" id="star5" required>
+                                            <label for="star5"><i class="fa fa-star"></i></label>
+                                            <input type="radio" name="rating" value="4" id="star4">
+                                            <label for="star4"><i class="fa fa-star"></i></label>
+                                            <input type="radio" name="rating" value="3" id="star3">
+                                            <label for="star3"><i class="fa fa-star"></i></label>
+                                            <input type="radio" name="rating" value="2" id="star2">
+                                            <label for="star2"><i class="fa fa-star"></i></label>
+                                            <input type="radio" name="rating" value="1" id="star1">
+                                            <label for="star1"><i class="fa fa-star"></i></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="border-bottom rounded my-4">
+                                    <textarea name="review" class="form-control border-0" cols="30" rows="8" 
+                                        placeholder="Your Review (minimum 10 characters) *" required minlength="10"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <button type="submit" class="btn border border-secondary text-primary rounded-pill px-4 py-3">
+                                    Post Review
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    {% elif user.is_authenticated and user_has_reviewed %}
+                    <div class="alert alert-info">
+                        <i class="fa fa-check-circle me-2"></i>You have already reviewed this product.
+                    </div>
+                    {% elif user.is_authenticated and not can_review %}
+                    <div class="alert alert-warning">
+                        <i class="fa fa-info-circle me-2"></i>Only verified buyers can leave reviews. Purchase this product to leave a review.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4 col-xl-3">
+                <div class="row g-4 fruite">
+                    <div class="col-lg-12">
+                        <div class="input-group w-100 mx-auto d-flex mb-4">
+                            <input type="search" class="form-control p-3" placeholder="keywords">
+                            <span class="input-group-text p-3"><i class="fa fa-search"></i></span>
+                        </div>
+                    </div>
+
+                    <!-- Featured Products -->
+                    {% if featured_products %}
+                    <div class="col-lg-12">
+                        <h4 class="mb-4">Featured Products</h4>
+                        {% for featured in featured_products %}
+                        <div class="d-flex align-items-center justify-content-start mb-3">
+                            <div class="rounded" style="width: 100px; height: 100px; overflow: hidden;">
+                                <img src="{{ featured.product_image.url }}" class="img-fluid rounded" alt="{{ featured.title }}">
+                            </div>
+                            <div>
+                                <a href="{% url 'product_detail' featured.id %}">
+                                    <h6 class="mb-2">{{ featured.title|truncatewords:3 }}</h6>
+                                </a>
+                                <div class="d-flex mb-2">
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= featured.average_rating %}
+                                            <i class="fa fa-star text-secondary small"></i>
+                                        {% else %}
+                                            <i class="fa fa-star small"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <div class="d-flex mb-2">
+                                    <h5 class="fw-bold me-2">{{ featured.discounted_price }}৳</h5>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <!-- Banner -->
+                    <div class="col-lg-12">
+                        <div class="position-relative">
+                            <img src="{% static 'img/banner-fruits.jpg' %}" class="img-fluid w-100 rounded" alt="">
+                            <div class="position-absolute" style="top: 50%; right: 10px; transform: translateY(-50%);">
+                                <h3 class="text-secondary fw-bold">Fresh <br> Fruits <br> Banner</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Products -->
+        {% if related_products %}
+        <h1 class="fw-bold mb-4">Related products</h1>
+        <div class="row g-4">
+            {% for related in related_products %}
+            <div class="col-lg-6 col-xl-3">
+                <div class="border border-primary rounded position-relative h-100">
+                    <div style="height: 200px; overflow: hidden;">
+                        <img src="{{ related.product_image.url }}" class="img-fluid w-100 h-100 rounded-top" style="object-fit: cover;" alt="{{ related.title }}">
+                    </div>
+                    <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">
+                        {{ related.get_category_display }}
+                    </div>
+                    <div class="p-4">
+                        <a href="{% url 'product_detail' related.id %}">
+                            <h4>{{ related.title|truncatewords:3 }}</h4>
+                        </a>
+                        <p>{{ related.descriptions|truncatewords:10 }}</p>
+                        <div class="d-flex justify-content-between flex-lg-wrap">
+                            <p class="text-dark fs-5 fw-bold">{{ related.discounted_price }}৳</p>
+                            <a href="{% url 'product_detail' related.id %}" class="btn border border-secondary rounded-pill px-3 py-1 text-primary">
+                                <i class="fa fa-eye me-2 text-primary"></i> View
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+<!-- Single Product End -->
+
+<!-- Custom CSS -->
+<style>
+.rating-stars {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
+.rating-stars input {
+    display: none;
+}
+
+.rating-stars label {
+    cursor: pointer;
+    font-size: 25px;
+    color: #ccc;
+    margin: 0 3px;
+}
+
+.rating-stars label:hover,
+.rating-stars label:hover ~ label,
+.rating-stars input:checked ~ label {
+    color: #FFD700;
+}
+</style>
+
+<!-- Quantity Script -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const quantityInput = document.querySelector('input[name="quantity"]');
+    const minusBtn = document.querySelector('.btn-minus');
+    const plusBtn = document.querySelector('.btn-plus');
+
+    if (minusBtn && plusBtn && quantityInput) {
+        minusBtn.addEventListener('click', function() {
+            let value = parseInt(quantityInput.value);
+            if (value > 1) {
+                quantityInput.value = value - 1;
+            }
+        });
+
+        plusBtn.addEventListener('click', function() {
+            let value = parseInt(quantityInput.value);
+            quantityInput.value = value + 1;
+        });
+    }
+});
+</script>
+
+{% endblock content %}

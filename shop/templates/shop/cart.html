@@ -1,0 +1,229 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block title %}Cart Page{% endblock title %}
+{% block content %}
+    <!-- Single Page Header start -->
+    <div class="container-fluid page-header py-5">
+        <h1 class="text-center text-white display-6">Cart</h1>
+        <ol class="breadcrumb justify-content-center mb-0">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'shop' %}">Shop</a></li>
+            <li class="breadcrumb-item active text-white">Cart</li>
+        </ol>
+    </div>
+    <!-- Single Page Header End -->
+
+    <!-- Cart Page Start -->
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                {% endfor %}
+            {% endif %}
+
+            {% if cart_items %}
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Products</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Handle</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart_items %}
+                        <tr data-item-id="{{ item.id }}">
+                            <th scope="row">
+                                <div class="d-flex align-items-center">
+                                    <img src="{{ item.product.product_image.url }}" class="img-fluid me-5 rounded-circle" style="width: 80px; height: 80px;" alt="{{ item.product.title }}">
+                                </div>
+                            </th>
+                            <td>
+                                <p class="mb-0 mt-4">{{ item.product.title }}</p>
+                            </td>
+                            <td>
+                                <p class="mb-0 mt-4">${{ item.product.discounted_price }}</p>
+                            </td>
+                            <td>
+                                <div class="input-group quantity mt-4" style="width: 100px;">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-sm btn-minus rounded-circle bg-light border" data-action="decrease" type="button">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                    </div>
+                                    <input type="text" class="form-control form-control-sm text-center border-0 quantity-input" value="{{ item.quantity }}" readonly>
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-sm btn-plus rounded-circle bg-light border" data-action="increase" type="button">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <p class="mb-0 mt-4 item-total">${{ item.subtotal }}</p>
+                            </td>
+                            <td>
+                                <button class="btn btn-md rounded-circle bg-light border mt-4 remove-item" type="button">
+                                    <i class="fa fa-times text-danger"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-5">
+                <input type="text" class="border-0 border-bottom rounded me-5 py-3 mb-4" placeholder="Coupon Code">
+                <button class="btn border-secondary rounded-pill px-4 py-3 text-primary" type="button">Apply Coupon</button>
+            </div>
+            
+            <div class="row g-4 justify-content-end">
+                <div class="col-8"></div>
+                <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
+                    <div class="bg-light rounded">
+                        <div class="p-4">
+                            <h1 class="display-6 mb-4">Cart <span class="fw-normal">Total</span></h1>
+                            <div class="d-flex justify-content-between mb-4">
+                                <h5 class="mb-0 me-4">Subtotal:</h5>
+                                <p class="mb-0 cart-total">${{ total }}</p>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <h5 class="mb-0 me-4">Shipping</h5>
+                                <div class="">
+                                    <p class="mb-0">Calculated at checkout</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
+                            <h5 class="mb-0 ps-4 me-4">Total</h5>
+                            <p class="mb-0 pe-4 cart-total">${{ total }}</p>
+                        </div>
+                        
+                        <!-- ✅ FIXED CHECKOUT LINK -->
+                        <div class="px-4 pb-4">
+                            <a href="{% url 'chackout' %}" class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase w-100" style="text-decoration: none;">
+                                Proceed to Checkout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
+                <p class="text-muted fs-4">Your cart is empty.</p>
+                <a href="{% url 'shop' %}" class="btn btn-primary mt-3">Continue Shopping</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <!-- Cart Page End -->
+
+    <!-- JavaScript for Cart Operations -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            const csrftoken = getCookie('csrftoken');
+
+            // Update cart item quantity
+            const plusMinusButtons = document.querySelectorAll('.btn-plus, .btn-minus');
+            plusMinusButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const row = this.closest('tr');
+                    const itemId = row.dataset.itemId;
+                    const action = this.dataset.action;
+                    const quantityInput = row.querySelector('.quantity-input');
+                    const itemTotal = row.querySelector('.item-total');
+
+                    fetch('{% url "update_cart_item" %}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRFToken': csrftoken
+                        },
+                        body: 'item_id=' + itemId + '&action=' + action
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            quantityInput.value = data.new_quantity;
+                            itemTotal.textContent = '$' + data.subtotal.toFixed(2);
+                            document.querySelectorAll('.cart-total').forEach(el => {
+                                el.textContent = '$' + data.cart_total.toFixed(2);
+                            });
+                        } else if (data.redirect) {
+                            window.location.href = data.redirect;
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+                });
+            });
+
+            // Remove item from cart
+            const removeButtons = document.querySelectorAll('.remove-item');
+            removeButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    if (confirm('Are you sure you want to remove this item?')) {
+                        const row = this.closest('tr');
+                        const itemId = row.dataset.itemId;
+
+                        fetch('{% url "remove_from_cart" %}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'X-CSRFToken': csrftoken
+                            },
+                            body: 'item_id=' + itemId
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                row.remove();
+                                document.querySelectorAll('.cart-total').forEach(el => {
+                                    el.textContent = '$' + data.cart_total.toFixed(2);
+                                });
+                                const remainingRows = document.querySelectorAll('tbody tr[data-item-id]');
+                                if (remainingRows.length === 0) {
+                                    location.reload();
+                                }
+                            } else if (data.redirect) {
+                                window.location.href = data.redirect;
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock content %}

@@ -1,0 +1,211 @@
+<!-- shop/templates/shop/chackout.html -->
+{% extends "shop/base.html" %}
+{% load static %}
+{% block title %}Checkout{% endblock title %}
+{% block content %}
+<!-- Single Page Header start -->
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6">Checkout</h1>
+    <ol class="breadcrumb justify-content-center mb-0">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'cart' %}">Cart</a></li>
+        <li class="breadcrumb-item active text-white">Checkout</li>
+    </ol>
+</div>
+<!-- Single Page Header End -->
+
+
+<!-- Checkout Page Start -->
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <h1 class="mb-4">Billing Details</h1>
+        <form method="POST" id="checkoutForm">
+            {% csrf_token %}
+            <div class="row g-5">
+                <div class="col-md-12 col-lg-6 col-xl-7">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-6">
+                            <div class="form-item w-100">
+                                <label class="form-label my-3">First Name<sup>*</sup></label>
+                                <input type="text" name="first_name" class="form-control" value="{% if user_profile %}{{ user_profile.first_name }}{% endif %}" required>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-6">
+                            <div class="form-item w-100">
+                                <label class="form-label my-3">Last Name<sup>*</sup></label>
+                                <input type="text" name="last_name" class="form-control" value="{% if user_profile %}{{ user_profile.last_name }}{% endif %}" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3">Company Name</label>
+                        <input type="text" name="company_name" class="form-control">
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3">Address <sup>*</sup></label>
+                        <input type="text" name="address" class="form-control" placeholder="House Number Street Name" value="{% if user_profile %}{{ user_profile.address }}{% endif %}" required>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3">Town/City<sup>*</sup></label>
+                        <input type="text" name="city" class="form-control" value="{% if user_profile %}{{ user_profile.city }}{% endif %}" required>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3">Country<sup>*</sup></label>
+                        <input type="text" name="country" class="form-control" value="{% if user_profile %}{{ user_profile.country }}{% else %}Bangladesh{% endif %}" required>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3">Postcode/Zip<sup>*</sup></label>
+                        <input type="text" name="postcode" class="form-control" value="{% if user_profile %}{{ user_profile.postcode }}{% endif %}" required>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3">Mobile<sup>*</sup></label>
+                        <input type="tel" name="phone" class="form-control" value="{% if user_profile %}{{ user_profile.phone }}{% endif %}" required>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3">Email Address<sup>*</sup></label>
+                        <input type="email" name="email" class="form-control" value="{{ user.email }}" required>
+                    </div>
+                    <hr>
+                    <div class="form-item">
+                        <textarea name="notes" class="form-control" spellcheck="false" cols="30" rows="6" placeholder="Order Notes (Optional)"></textarea>
+                    </div>
+                </div>
+                
+                <div class="col-md-12 col-lg-6 col-xl-5">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Products</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in cart_items %}
+                                <tr>
+                                    <th scope="row">
+                                        <div class="d-flex align-items-center mt-2">
+                                            <img src="{{ item.product.product_image.url }}" class="img-fluid rounded-circle" style="width: 90px; height: 90px;" alt="{{ item.product.title }}">
+                                        </div>
+                                    </th>
+                                    <td class="py-5">{{ item.product.title }}</td>
+                                    <td class="py-5">${{ item.product.discounted_price }}</td>
+                                    <td class="py-5">{{ item.quantity }}</td>
+                                    <td class="py-5">${{ item.subtotal }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center">No items in cart.</td>
+                                </tr>
+                                {% endfor %}
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td class="py-5"></td>
+                                    <td class="py-5"></td>
+                                    <td class="py-5">
+                                        <p class="mb-0 text-dark py-3">Subtotal</p>
+                                    </td>
+                                    <td class="py-5">
+                                        <div class="py-3 border-bottom border-top">
+                                            <p class="mb-0 text-dark" id="subtotal">${{ subtotal }}</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td colspan="2" class="py-5">
+                                        <p class="mb-0 text-dark py-4">Shipping</p>
+                                    </td>
+                                    <td colspan="2" class="py-5">
+                                        <div class="form-check text-start">
+                                            <input type="radio" class="form-check-input shipping-option" name="shipping_method" value="FREE" data-cost="0" checked>
+                                            <label class="form-check-label">Free Shipping</label>
+                                        </div>
+                                        <div class="form-check text-start">
+                                            <input type="radio" class="form-check-input shipping-option" name="shipping_method" value="FLAT" data-cost="15">
+                                            <label class="form-check-label">Flat rate: $15.00</label>
+                                        </div>
+                                        <div class="form-check text-start">
+                                            <input type="radio" class="form-check-input shipping-option" name="shipping_method" value="LOCAL" data-cost="8">
+                                            <label class="form-check-label">Local Pickup: $8.00</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td class="py-5">
+                                        <p class="mb-0 text-dark text-uppercase py-3">TOTAL</p>
+                                    </td>
+                                    <td class="py-5"></td>
+                                    <td class="py-5"></td>
+                                    <td class="py-5">
+                                        <div class="py-3 border-bottom border-top">
+                                            <p class="mb-0 text-dark" id="total">${{ subtotal }}</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <h5 class="mt-4 mb-3">Payment Method</h5>
+                    <div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
+                        <div class="col-12">
+                            <div class="form-check text-start my-3">
+                                <input type="radio" class="form-check-input bg-primary border-0" name="payment_method" value="BANK" required>
+                                <label class="form-check-label">Direct Bank Transfer</label>
+                            </div>
+                            <p class="text-start text-dark small">Make your payment directly into our bank account. Please use your Order ID as the payment reference.</p>
+                        </div>
+                    </div>
+                    <div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
+                        <div class="col-12">
+                            <div class="form-check text-start my-3">
+                                <input type="radio" class="form-check-input bg-primary border-0" name="payment_method" value="CHECK">
+                                <label class="form-check-label">Check Payments</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
+                        <div class="col-12">
+                            <div class="form-check text-start my-3">
+                                <input type="radio" class="form-check-input bg-primary border-0" name="payment_method" value="COD" checked>
+                                <label class="form-check-label">Cash On Delivery</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
+                        <div class="col-12">
+                            <div class="form-check text-start my-3">
+                                <input type="radio" class="form-check-input bg-primary border-0" name="payment_method" value="PAYPAL">
+                                <label class="form-check-label">Paypal</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row g-4 text-center align-items-center justify-content-center pt-4">
+                        <button type="submit" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Place Order</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Checkout Page End -->
+
+
+<script>
+// Calculate total with shipping
+document.querySelectorAll('.shipping-option').forEach(option => {
+    option.addEventListener('change', function() {
+        const subtotal = parseFloat({{ subtotal }});
+        const shippingCost = parseFloat(this.dataset.cost);
+        const total = subtotal + shippingCost;
+        document.getElementById('total').textContent = '$' + total.toFixed(2);
+    });
+});
+</script>
+{% endblock content %}

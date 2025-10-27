@@ -1,0 +1,292 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block title %}My Profile{% endblock title %}
+{% block content %}
+<!-- Profile Header -->
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6">My Dashboard</h1>
+    <ol class="breadcrumb justify-content-center mb-0">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item active text-white">Profile</li>
+    </ol>
+</div>
+
+<!-- Dashboard Start -->
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3 mb-4">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        {% if user_profile.profile_image %}
+                        <img src="{{ user_profile.profile_image.url }}" class="rounded-circle mb-3" style="width: 120px; height: 120px; object-fit: cover;" alt="Profile">
+                        {% else %}
+                        <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center mb-3" style="width: 120px; height: 120px; font-size: 48px;">
+                            {{ user.username|first|upper }}
+                        </div>
+                        {% endif %}
+                        <h5 class="mb-1">{{ user.username }}</h5>
+                        <p class="text-muted small mb-3">{{ user.email }}</p>
+                        <hr>
+                        <div class="list-group list-group-flush">
+                            <a href="#dashboard" class="list-group-item list-group-item-action active" data-bs-toggle="pill">
+                                <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                            </a>
+                            <a href="#edit-profile" class="list-group-item list-group-item-action" data-bs-toggle="pill">
+                                <i class="fas fa-user-edit me-2"></i>Edit Profile
+                            </a>
+                            <a href="#orders" class="list-group-item list-group-item-action" data-bs-toggle="pill">
+                                <i class="fas fa-shopping-bag me-2"></i>My Orders
+                            </a>
+                            <a href="{% url 'logout' %}" class="list-group-item list-group-item-action text-danger">
+                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <div class="tab-content">
+                    <!-- Dashboard Tab -->
+                    <div class="tab-pane fade show active" id="dashboard">
+                        <h3 class="mb-4">Dashboard Overview</h3>
+                        
+                        <!-- Statistics Cards -->
+                        <div class="row mb-4">
+                            <div class="col-md-3 mb-3">
+                                <div class="card border-0 shadow-sm text-center">
+                                    <div class="card-body">
+                                        <i class="fas fa-shopping-cart fa-2x text-primary mb-2"></i>
+                                        <h4 class="mb-1">{{ total_orders }}</h4>
+                                        <p class="text-muted small mb-0">Total Orders</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="card border-0 shadow-sm text-center">
+                                    <div class="card-body">
+                                        <i class="fas fa-clock fa-2x text-warning mb-2"></i>
+                                        <h4 class="mb-1">{{ pending_orders }}</h4>
+                                        <p class="text-muted small mb-0">Pending</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="card border-0 shadow-sm text-center">
+                                    <div class="card-body">
+                                        <i class="fas fa-check-circle fa-2x text-success mb-2"></i>
+                                        <h4 class="mb-1">{{ completed_orders }}</h4>
+                                        <p class="text-muted small mb-0">Completed</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="card border-0 shadow-sm text-center">
+                                    <div class="card-body">
+                                        <i class="fas fa-dollar-sign fa-2x text-info mb-2"></i>
+                                        <h4 class="mb-1">${{ total_spent|floatformat:2 }}</h4>
+                                        <p class="text-muted small mb-0">Total Spent</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Orders -->
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0">Recent Orders</h5>
+                            </div>
+                            <div class="card-body">
+                                {% if orders %}
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Order #</th>
+                                                <th>Date</th>
+                                                <th>Total</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for order in orders %}
+                                            <tr>
+                                                <td><strong>{{ order.order_number }}</strong></td>
+                                                <td>{{ order.created_at|date:"M d, Y" }}</td>
+                                                <td>${{ order.total }}</td>
+                                                <td>
+                                                    {% if order.status == 'PENDING' %}
+                                                    <span class="badge bg-warning text-dark">{{ order.get_status_display }}</span>
+                                                    {% elif order.status == 'PROCESSING' %}
+                                                    <span class="badge bg-info">{{ order.get_status_display }}</span>
+                                                    {% elif order.status == 'SHIPPED' %}
+                                                    <span class="badge bg-primary">{{ order.get_status_display }}</span>
+                                                    {% elif order.status == 'DELIVERED' %}
+                                                    <span class="badge bg-success">{{ order.get_status_display }}</span>
+                                                    {% else %}
+                                                    <span class="badge bg-danger">{{ order.get_status_display }}</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    <a href="{% url 'order_detail' order.order_number %}" class="btn btn-sm btn-outline-primary">View</a>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {% else %}
+                                <div class="text-center py-5">
+                                    <i class="fas fa-shopping-bag fa-3x text-muted mb-3"></i>
+                                    <p class="text-muted">No orders yet</p>
+                                    <a href="{% url 'shop' %}" class="btn btn-primary">Start Shopping</a>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Edit Profile Tab -->
+                    <div class="tab-pane fade" id="edit-profile">
+                        <h3 class="mb-4">Edit Profile</h3>
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <form method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-md-12 mb-3 text-center">
+                                            {% if user_profile.profile_image %}
+                                            <img src="{{ user_profile.profile_image.url }}" class="rounded-circle mb-3" id="profilePreview" style="width: 150px; height: 150px; object-fit: cover;" alt="Profile">
+                                            {% else %}
+                                            <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center mb-3" id="profilePreview" style="width: 150px; height: 150px; font-size: 60px;">
+                                                {{ user.username|first|upper }}
+                                            </div>
+                                            {% endif %}
+                                            <div>
+                                                <label for="profileImageInput" class="btn btn-sm btn-outline-primary">
+                                                    <i class="fas fa-camera me-2"></i>Change Photo
+                                                </label>
+                                                <input type="file" name="profile_image" id="profileImageInput" class="d-none" accept="image/*">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">First Name<sup class="text-danger">*</sup></label>
+                                            <input type="text" name="first_name" class="form-control" value="{{ user_profile.first_name }}" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Last Name<sup class="text-danger">*</sup></label>
+                                            <input type="text" name="last_name" class="form-control" value="{{ user_profile.last_name }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Email<sup class="text-danger">*</sup></label>
+                                            <input type="email" name="email" class="form-control" value="{{ user_profile.email }}" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Phone<sup class="text-danger">*</sup></label>
+                                            <input type="tel" name="phone" class="form-control" value="{{ user_profile.phone }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Address<sup class="text-danger">*</sup></label>
+                                        <input type="text" name="address" class="form-control" value="{{ user_profile.address }}" required>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label class="form-label">City<sup class="text-danger">*</sup></label>
+                                            <input type="text" name="city" class="form-control" value="{{ user_profile.city }}" required>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label class="form-label">Country<sup class="text-danger">*</sup></label>
+                                            <input type="text" name="country" class="form-control" value="{{ user_profile.country }}" required>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label class="form-label">Postcode<sup class="text-danger">*</sup></label>
+                                            <input type="text" name="postcode" class="form-control" value="{{ user_profile.postcode }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-primary py-3">
+                                            <i class="fas fa-save me-2"></i>Save Changes
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Orders Tab -->
+                    <div class="tab-pane fade" id="orders">
+                        <h3 class="mb-4">Order History</h3>
+                        {% if orders %}
+                        {% for order in orders %}
+                        <div class="card border-0 shadow-sm mb-3">
+                            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>Order #{{ order.order_number }}</strong>
+                                    <span class="text-muted ms-2">{{ order.created_at|date:"F d, Y" }}</span>
+                                </div>
+                                <div>
+                                    {% if order.status == 'PENDING' %}
+                                    <span class="badge bg-warning text-dark">{{ order.get_status_display }}</span>
+                                    {% elif order.status == 'DELIVERED' %}
+                                    <span class="badge bg-success">{{ order.get_status_display }}</span>
+                                    {% else %}
+                                    <span class="badge bg-primary">{{ order.get_status_display }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <p class="mb-1"><strong>Items:</strong> {{ order.items.count }} item(s)</p>
+                                        <p class="mb-1"><strong>Payment:</strong> {{ order.get_payment_method_display }}</p>
+                                        <p class="mb-0"><strong>Shipping:</strong> {{ order.get_shipping_method_display }}</p>
+                                    </div>
+                                    <div class="col-md-4 text-end">
+                                        <h5 class="text-primary mb-3">${{ order.total }}</h5>
+                                        <a href="{% url 'order_detail' order.order_number %}" class="btn btn-sm btn-outline-primary">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body text-center py-5">
+                                <i class="fas fa-shopping-bag fa-4x text-muted mb-3"></i>
+                                <h5 class="text-muted">No orders yet</h5>
+                                <p class="text-muted">Start shopping to see your orders here</p>
+                                <a href="{% url 'shop' %}" class="btn btn-primary mt-3">Browse Products</a>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Dashboard End -->
+
+<script>
+// Image preview
+document.getElementById('profileImageInput').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('profilePreview').innerHTML = '<img src="' + e.target.result + '" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">';
+        }
+        reader.readAsDataURL(file);
+    }
+});
+</script>
+{% endblock content %}
