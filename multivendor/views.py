@@ -4,9 +4,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Seller
 from .forms import SellerRegisterForm, SellerLoginForm, SellerProductForm, SellerProfileForm
-from shop.models import Product, OrderItem, Order
+from shop.models import Product, OrderItem, Order, ProductQuestion
 from django.contrib.auth.decorators import login_required
-
+from django.utils import timezone
 
 def seller_register(request):
     if request.method == 'POST':
@@ -118,8 +118,12 @@ def seller_orders(request):
     if request.method == "POST":
         order_id = request.POST.get("order_id")
         new_status = request.POST.get("status")
-        # The correct related name is "items", not "orderitem"
-        order = get_object_or_404(Order, id=order_id, items__product__seller=seller)
+        # FIX: use .filter().distinct().first() not get_object_or_404
+        order = Order.objects.filter(id=order_id, items__product__seller=seller).distinct().first()
+        if not order:
+            messages.error(request, "Order not found.")
+            return redirect('multivendor:seller_orders')
+
         if new_status in ["PENDING", "ON_THE_WAY", "DELIVERED", "CANCELLED"]:
             order.status = new_status
             order.save()
@@ -132,6 +136,7 @@ def seller_orders(request):
         'orders': orders
     })
 
+
 @login_required
 def seller_all_products(request):
     seller = get_object_or_404(Seller, user=request.user)
@@ -139,4 +144,40 @@ def seller_all_products(request):
     return render(request, 'multivendor/seller_all_products.html', {
         'products': products,
         'seller': seller,
+    })
+
+@login_required
+def seller_product_questions(request):
+    seller = get_object_or_404(Seller, user=request.user)
+    questions = ProductQuestion.objects.filter(product__seller=seller)
+    unanswered_questions = questions.filter(is_answered=False)
+    answered_questions = questions.filter(is_answered=True)
+    context = {
+        'unanswered_questions': unanswered_questions,
+        'answered_questions': answered_questions
+    }
+    return render(request, 'multivendor/seller_questions.html', context)
+
+@login_required
+def seller_answer_question(request, question_id):
+    # Get the seller object from current user
+    seller = get_object_or_404(Seller, user=request.user)
+    # Get the ProductQuestion and check it's this seller's product
+    question = get_object_or_404(ProductQuestion, id=question_id, product__seller=seller)
+    if request.method == 'POST':
+        answer = request.POST.get('answer', '').strip()
+        if answer:
+            question.answer = answer
+            question.is_answered = True
+            question.answered_by = request.user
+            question.answered_at = timezone.now()
+            question.save()
+            messages.success(request, 'Answer posted successfully!')
+            return redirect('multivendor:seller_product_questions')
+        else:
+            messages.error(request, 'Please provide an answer.')
+    # GET request: show answer page
+    return render(request, 'multivendor/seller_answer_question.html', {
+        'seller': seller,
+        'question': question
     })

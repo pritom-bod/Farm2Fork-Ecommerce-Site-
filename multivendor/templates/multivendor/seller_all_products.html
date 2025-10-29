@@ -21,8 +21,8 @@
         {% for product in products %}
         <tr>
           <td>{{ product.title }}</td>
-          <td>${{ product.regular_price }}</td>
-          <td>${{ product.discounted_price }}</td>
+          <td>৳{{ product.regular_price }}</td>
+          <td>৳{{ product.discounted_price }}</td>
           <td>{{ product.category }}</td>
           <td>
             {% if product.product_image %}

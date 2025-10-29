@@ -12,7 +12,8 @@ from django.contrib.auth.views import LoginView
 from django.utils.decorators import method_decorator
 from django.core.exceptions import ValidationError
 import logging
-
+from django.core.paginator import Paginator
+from django.utils import timezone
 from .models import Product, UserProfile, Cart, CartItem, Order, OrderItem, Tag, ProductReview, ProductQuestion
 from .forms import (
     UserRegForm, 
@@ -28,9 +29,7 @@ from .forms import (
 logger = logging.getLogger(__name__)
 
 
-# ============================================================
-# HELPER FUNCTIONS
-# ============================================================
+#help function
 
 def get_cart(request):
     """Get or create cart for authenticated user"""
@@ -42,9 +41,7 @@ def get_cart(request):
 
 
 
-# ============================================================
-# HOME & PRODUCT VIEWS
-# ============================================================
+#home and product view
 
 class ProductView(View):
     """Home page view displaying products by category"""
@@ -68,6 +65,8 @@ class ProductView(View):
             logger.error(f"Error in ProductView: {str(e)}")
             messages.error(request, "An error occurred while loading products.")
             return render(request, 'shop/index.html', {})
+        
+    
 
 
 def shop(request, data=None):
@@ -152,29 +151,26 @@ def shop(request, data=None):
         return render(request, 'shop/shop.html', {})
 
 
-from django.core.paginator import Paginator
+
 
 class ProductDetails(View):
     """Product detail page with reviews and public Q&A"""
     def get(self, request, pk):
         try:
             product = get_object_or_404(Product, pk=pk)
-            
-            # Get reviews
+
             reviews = ProductReview.objects.filter(product=product).select_related('user', 'order')
-            
-            # Check review permissions
+
             can_review = False
             user_has_reviewed = False
             user_order = None
-            
+
             if request.user.is_authenticated:
                 user_order_item = OrderItem.objects.filter(
                     product=product,
                     order__user=request.user,
                     order__status='DELIVERED'
                 ).first()
-                
                 if user_order_item:
                     can_review = True
                     user_order = user_order_item.order
@@ -183,28 +179,24 @@ class ProductDetails(View):
                         user=request.user,
                         order=user_order
                     ).exists()
-            
-            # Featured and related products
+
             featured_products = Product.objects.annotate(
                 avg_rating=Avg('reviews__rating'),
                 review_count=Count('reviews')
             ).filter(review_count__gt=0).order_by('-avg_rating', '-review_count')[:6]
-            
+
             related_products = Product.objects.filter(
                 category=product.category
             ).exclude(id=product.id)[:8]
-            
-            # === PUBLIC Q&A SYSTEM ===
+
+            # === Q&A SYSTEM ===
             questions = ProductQuestion.objects.filter(product=product).select_related('user', 'answered_by')
             total_questions = questions.count()
-            
-            # Pagination for questions
-            paginator = Paginator(questions, 10)  # 10 questions per page
+            paginator = Paginator(questions, 10)
             page_number = request.GET.get('page')
             questions_page = paginator.get_page(page_number)
-            
             question_form = ProductQuestionForm()
-            
+
             context = {
                 'product': product,
                 'reviews': reviews,
@@ -220,50 +212,47 @@ class ProductDetails(View):
             return render(request, 'shop/product-detail.html', context)
         
         except Exception as e:
+            import logging
+            logger = logging.getLogger(__name__)
             logger.error(f"Error in product details: {str(e)}")
             messages.error(request, "Product not found.")
             return redirect('shop')
-    
+
     def post(self, request, pk):
         """Handle review AND question submission"""
         if not request.user.is_authenticated:
             messages.error(request, "Please login first.")
             return redirect('login')
-        
+
         try:
             product = get_object_or_404(Product, pk=pk)
-            
-            # Check if it's a QUESTION or REVIEW
+
+            # Question Submission by User
             if 'question' in request.POST:
-                # === HANDLE QUESTION SUBMISSION ===
                 form = ProductQuestionForm(request.POST)
                 if form.is_valid():
                     question = form.save(commit=False)
                     question.product = product
                     question.user = request.user
                     question.save()
-                    
-                    # TODO: Send notification to seller (product.user)
-                    # You can use Django signals or email here
-                    
+                    # TODO: Notification system to seller here
                     messages.success(request, "Your question has been posted! The seller will be notified.")
                     return redirect('product_detail', pk=pk)
                 else:
                     messages.error(request, "Please enter a valid question.")
                     return redirect('product_detail', pk=pk)
-            
+
+            # Review Submission by Buyer
             elif 'rating' in request.POST:
-                # === HANDLE REVIEW SUBMISSION (existing code) ===
                 user_order_item = OrderItem.objects.filter(
                     product=product,
                     order__user=request.user,
                     order__status='DELIVERED'
                 ).first()
-                
                 if not user_order_item:
                     messages.error(request, "You can only review products you have purchased.")
                     return redirect('product_detail', pk=pk)
-                
+
                 if ProductReview.objects.filter(
                     product=product,
                     user=request.user,
@@ -271,14 +260,14 @@ class ProductDetails(View):
                 ).exists():
                     messages.error(request, "You have already reviewed this product.")
                     return redirect('product_detail', pk=pk)
-                
+
                 rating = int(request.POST.get('rating'))
                 review_text = request.POST.get('review', '').strip()
-                
+
                 if not review_text or len(review_text) < 10:
                     messages.error(request, "Review must be at least 10 characters long.")
                     return redirect('product_detail', pk=pk)
-                
+
                 ProductReview.objects.create(
                     product=product,
                     user=request.user,
@@ -286,15 +275,33 @@ class ProductDetails(View):
                     rating=rating,
                     review=review_text
                 )
-                
                 messages.success(request, "Review submitted successfully!")
                 return redirect('product_detail', pk=pk)
-            
+
+            # Seller answers a question (from product detail inline if desired)
+            elif 'answer' in request.POST:
+                question_id = request.POST.get('question_id')
+                answer_text = request.POST.get('answer', '').strip()
+                question = ProductQuestion.objects.get(id=question_id, product=product)
+                # Only product's seller can answer
+                if hasattr(product, 'seller') and request.user == product.seller.user and answer_text:
+                    question.answer = answer_text
+                    question.is_answered = True
+                    question.answered_by = request.user
+                    question.answered_at = timezone.now()
+                    question.save()
+                    messages.success(request, "Answer submitted!")
+                else:
+                    messages.error(request, "Only the seller can answer!")
+                return redirect('product_detail', pk=pk)
+
             else:
                 messages.error(request, "Invalid request.")
                 return redirect('product_detail', pk=pk)
-        
+
         except Exception as e:
+            import logging
+            logger = logging.getLogger(__name__)
             logger.error(f"Error in POST: {str(e)}")
             messages.error(request, "An error occurred.")
             return redirect('product_detail', pk=pk)
@@ -329,9 +336,7 @@ def cart(request):
         return render(request, 'shop/cart.html', {'cart_items': [], 'total': 0})
 
 
-# ============================================================
-# CHECKOUT & ORDER VIEWS
-# ============================================================
+#checkout and order
 
 @login_required
 def chackout(request):
@@ -355,7 +360,7 @@ def chackout(request):
         
         # Handle POST request (order submission)
         if request.method == 'POST':
-            print("\n🔥 POST REQUEST RECEIVED!")
+            print("\n POST REQUEST RECEIVED!")
             print("POST Data:", dict(request.POST))
             
             if cart_items.count() == 0:
@@ -377,7 +382,7 @@ def chackout(request):
                 payment_method = request.POST.get('payment_method')
                 notes = request.POST.get('notes', '').strip()
                 
-                print(f"\n📋 Order Details:")
+                print(f"\n Order Details:")
                 print(f"  Name: {first_name} {last_name}")
                 print(f"  Email: {email}")
                 print(f"  Payment: {payment_method}")
@@ -389,14 +394,14 @@ def chackout(request):
                     raise ValueError("Missing required fields")
                 
                 # Calculate shipping cost
-                shipping_costs = {'FREE': 0.00, 'FLAT': 15.00, 'LOCAL': 8.00}
+                shipping_costs = {'FREE': 0.00, 'FLAT': 80.00, 'LOCAL': 20.00}
                 shipping_cost = shipping_costs.get(shipping_method, 0.00)
                 total = float(subtotal) + shipping_cost
                 
                 # Generate order number
                 order_number = f"ORD{get_random_string(10).upper()}"
                 
-                print(f"\n💰 Order Calculation:")
+                print(f"\n Order Calculation:")
                 print(f"  Subtotal: ${subtotal}")
                 print(f"  Shipping: ${shipping_cost}")
                 print(f"  Total: ${total}")
@@ -425,7 +430,7 @@ def chackout(request):
                         status='PENDING'
                     )
                     
-                    print(f"✅ Order created: {order.id}")
+                    print(f" Order created: {order.id}")
                     
                     # Create Order Items
                     for item in cart_items:
@@ -440,9 +445,9 @@ def chackout(request):
                     
                     # Clear cart
                     cart_items.delete()
-                    print("🛒 Cart cleared")
+                    print(" Cart cleared")
                 
-                print(f"\n🎉 ORDER PLACED SUCCESSFULLY!")
+                print(f"\n ORDER PLACED SUCCESSFULLY!")
                 print(f"Redirecting to: order_confirmation/{order_number}")
                 print("="*60 + "\n")
                 
@@ -450,7 +455,7 @@ def chackout(request):
                 return redirect('order_confirmation', order_number=order_number)
             
             except Exception as e:
-                print(f"\n❌ ERROR creating order: {str(e)}")
+                print(f"\n ERROR creating order: {str(e)}")
                 import traceback
                 traceback.print_exc()
                 messages.error(request, f"Error: {str(e)}")
@@ -465,7 +470,7 @@ def chackout(request):
         return render(request, 'shop/chackout.html', context)
     
     except Exception as e:
-        print(f"\n❌ CRITICAL ERROR: {str(e)}")
+        print(f"\n CRITICAL ERROR: {str(e)}")
         import traceback
         traceback.print_exc()
         messages.error(request, f"Error: {str(e)}")
@@ -639,9 +644,9 @@ class CustomLoginView(LoginView):
         return super().get(request, *args, **kwargs)
 
 
-# ============================================================
-# STATIC PAGES
-# ============================================================
+
+#normal pages
+
 
 def contact(request):
     """Contact page"""
@@ -658,9 +663,9 @@ def E_page(request):
     return render(request, 'shop/404.html')
 
 
-# ============================================================
-# AJAX CART OPERATIONS
-# ============================================================
+
+# ajax operations
+
 
 def add_to_cart(request):
     """Add product to cart via AJAX"""

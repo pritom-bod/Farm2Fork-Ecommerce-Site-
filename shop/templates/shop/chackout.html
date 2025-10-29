@@ -92,9 +92,9 @@
                                         </div>
                                     </th>
                                     <td class="py-5">{{ item.product.title }}</td>
-                                    <td class="py-5">${{ item.product.discounted_price }}</td>
+                                    <td class="py-5">৳{{ item.product.discounted_price }}</td>
                                     <td class="py-5">{{ item.quantity }}</td>
-                                    <td class="py-5">${{ item.subtotal }}</td>
+                                    <td class="py-5">৳{{ item.subtotal }}</td>
                                 </tr>
                                 {% empty %}
                                 <tr>
@@ -110,7 +110,7 @@
                                     </td>
                                     <td class="py-5">
                                         <div class="py-3 border-bottom border-top">
-                                            <p class="mb-0 text-dark" id="subtotal">${{ subtotal }}</p>
+                                            <p class="mb-0 text-dark" id="subtotal">৳{{ subtotal }}</p>
                                         </div>
                                     </td>
                                 </tr>
@@ -125,12 +125,12 @@
                                             <label class="form-check-label">Free Shipping</label>
                                         </div>
                                         <div class="form-check text-start">
-                                            <input type="radio" class="form-check-input shipping-option" name="shipping_method" value="FLAT" data-cost="15">
-                                            <label class="form-check-label">Flat rate: $15.00</label>
+                                            <input type="radio" class="form-check-input shipping-option" name="shipping_method" value="FLAT" data-cost="80">
+                                            <label class="form-check-label">Flat rate: ৳80</label>
                                         </div>
                                         <div class="form-check text-start">
-                                            <input type="radio" class="form-check-input shipping-option" name="shipping_method" value="LOCAL" data-cost="8">
-                                            <label class="form-check-label">Local Pickup: $8.00</label>
+                                            <input type="radio" class="form-check-input shipping-option" name="shipping_method" value="LOCAL" data-cost="20">
+                                            <label class="form-check-label">Local Pickup: ৳20</label>
                                         </div>
                                     </td>
                                 </tr>
@@ -143,7 +143,7 @@
                                     <td class="py-5"></td>
                                     <td class="py-5">
                                         <div class="py-3 border-bottom border-top">
-                                            <p class="mb-0 text-dark" id="total">${{ subtotal }}</p>
+                                            <p class="mb-0 text-dark" id="total">৳{{ subtotal }}</p>
                                         </div>
                                     </td>
                                 </tr>
@@ -204,7 +204,7 @@ document.querySelectorAll('.shipping-option').forEach(option => {
         const subtotal = parseFloat({{ subtotal }});
         const shippingCost = parseFloat(this.dataset.cost);
         const total = subtotal + shippingCost;
-        document.getElementById('total').textContent = '$' + total.toFixed(2);
+        document.getElementById('total').textContent = '৳' + total.toFixed(2);
     });
 });
 </script>

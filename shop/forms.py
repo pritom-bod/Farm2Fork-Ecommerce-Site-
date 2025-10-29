@@ -312,3 +312,13 @@ class ProductQuestionForm(forms.ModelForm):
                 'placeholder': 'Ask your question about this product...'
             }),
         }
+
+
+
+class ProductQuestionForm(forms.ModelForm):
+    class Meta:
+        model = ProductQuestion
+        fields = ['question']
+        widgets = {
+            'question': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Ei product er jonne question korun...'})
+        }

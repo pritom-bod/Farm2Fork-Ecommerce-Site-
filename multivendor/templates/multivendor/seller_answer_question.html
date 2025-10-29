@@ -1,0 +1,48 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}Answer Product Question{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Answer Customer Question</h4>
+                </div>
+                <div class="card-body">
+                    <h6 class="mb-3">Product: 
+                        <a href="{% url 'product_detail' question.product.id %}">
+                            {{ question.product.title }}
+                        </a>
+                    </h6>
+                    <div class="alert alert-info">
+                        <strong>Question:</strong>
+                        <p class="mb-0">{{ question.question }}</p>
+                        <hr>
+                        <small class="text-muted">
+                            Asked by {{ question.user.username }} on {{ question.created_at|date:"M d, Y H:i" }}
+                        </small>
+                    </div>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="answer" class="form-label">Your Answer:</label>
+                            <textarea name="answer" id="answer" class="form-control" rows="5" required placeholder="Write your answer here..."></textarea>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'multivendor:seller_product_questions' %}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-1"></i>Back
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-check me-1"></i>Post Answer
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -12,4 +12,7 @@ urlpatterns = [
     path('seller/orders/', views.seller_orders, name='seller_orders'),  # <-- This must match view name
     path('seller/profile/', views.seller_profile, name='seller_profile'),
     path('seller/all-products/', views.seller_all_products, name='seller_all_products'),
+    path('seller/questions/', views.seller_product_questions, name='seller_product_questions'),
+    path('seller/questions/<int:question_id>/answer/', views.seller_answer_question, name='seller_answer_question'),
+
 ]

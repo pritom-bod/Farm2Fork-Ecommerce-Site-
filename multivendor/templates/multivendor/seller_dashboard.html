@@ -41,7 +41,7 @@
                             <a href="{% url 'multivendor:seller_all_products' %}" class="list-group-item list-group-item-action">
                                 <i class="fas fa-cubes me-2"></i>My Products
                             </a>
-                            <a href="{% url 'seller_product_questions' %}" class="btn btn-warning">
+                            <a href="{% url 'multivendor:seller_product_questions' %}" class="btn btn-warning">
                                 <i class="fas fa-question-circle me-2"></i>
                                 Product Questions
                                 {% if unanswered_count %}
@@ -86,7 +86,7 @@
                                 <div class="card border-0 shadow-sm text-center text-primary">
                                     <div class="card-body">
                                         <i class="fas fa-dollar-sign fa-2x mb-2"></i>
-                                        <h4 class="mb-1">${{ earnings|default:"0.00" }}</h4>
+                                        <h4 class="mb-1">৳{{ earnings|default:"0.00" }}</h4>
                                         <p class="text-muted mb-0">Earnings Delivered</p>
                                     </div>
                                 </div>
@@ -121,8 +121,8 @@
                                             {% for product in products %}
                                                 <tr>
                                                     <td>{{ product.title }}</td>
-                                                    <td>${{ product.regular_price }}</td>
-                                                    <td>${{ product.discounted_price }}</td>
+                                                    <td>৳{{ product.regular_price }}</td>
+                                                    <td>৳{{ product.discounted_price }}</td>
                                                     <td>{{ product.category }}</td>
                                                     <td>
                                                         {% if product.product_image %}
