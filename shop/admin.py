@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, Tag, Cart, CartItem, UserProfile, Order, OrderItem
+from .models import Product, Tag, Cart, CartItem, UserProfile, Order, OrderItem, ProductQuestion
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
@@ -46,3 +46,5 @@ class OrderAdmin(admin.ModelAdmin):
             'fields': ('notes',)
         }),
     )
+
+admin.site.register(ProductQuestion)

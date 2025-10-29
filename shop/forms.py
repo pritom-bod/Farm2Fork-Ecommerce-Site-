@@ -12,7 +12,7 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
 from django.contrib.auth import password_validation
 from django.core.exceptions import ValidationError
-from .models import UserProfile
+from .models import ProductQuestion, UserProfile
 import re
 
 
@@ -300,3 +300,15 @@ class UserProfileForm(forms.ModelForm):
             profile.save()
         
         return profile
+
+class ProductQuestionForm(forms.ModelForm):
+    class Meta:
+        model = ProductQuestion
+        fields = ['question']
+        widgets = {
+            'question': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 3,
+                'placeholder': 'Ask your question about this product...'
+            }),
+        }

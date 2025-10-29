@@ -13,14 +13,15 @@ from django.utils.decorators import method_decorator
 from django.core.exceptions import ValidationError
 import logging
 
-from .models import Product, UserProfile, Cart, CartItem, Order, OrderItem, Tag, ProductReview
+from .models import Product, UserProfile, Cart, CartItem, Order, OrderItem, Tag, ProductReview, ProductQuestion
 from .forms import (
     UserRegForm, 
     LoginForm, 
     PassChangeForm, 
     UserProfileForm, 
     MyPasswordResetForm, 
-    MySetPasswordForm
+    MySetPasswordForm,
+    ProductQuestionForm,
 )
 
 # Setup logging
@@ -151,22 +152,23 @@ def shop(request, data=None):
         return render(request, 'shop/shop.html', {})
 
 
+from django.core.paginator import Paginator
+
 class ProductDetails(View):
-    """Product detail page with reviews and add to cart"""
+    """Product detail page with reviews and public Q&A"""
     def get(self, request, pk):
         try:
             product = get_object_or_404(Product, pk=pk)
             
-            # Get reviews (only from verified buyers)
+            # Get reviews
             reviews = ProductReview.objects.filter(product=product).select_related('user', 'order')
             
-            # Check if user has purchased this product and can review
+            # Check review permissions
             can_review = False
             user_has_reviewed = False
             user_order = None
             
             if request.user.is_authenticated:
-                # Check if user bought this product
                 user_order_item = OrderItem.objects.filter(
                     product=product,
                     order__user=request.user,
@@ -176,24 +178,32 @@ class ProductDetails(View):
                 if user_order_item:
                     can_review = True
                     user_order = user_order_item.order
-                    
-                    # Check if user already reviewed
                     user_has_reviewed = ProductReview.objects.filter(
                         product=product,
                         user=request.user,
                         order=user_order
                     ).exists()
             
-            # Get featured products (products with high ratings)
+            # Featured and related products
             featured_products = Product.objects.annotate(
                 avg_rating=Avg('reviews__rating'),
                 review_count=Count('reviews')
             ).filter(review_count__gt=0).order_by('-avg_rating', '-review_count')[:6]
             
-            # Get related products (same category)
             related_products = Product.objects.filter(
                 category=product.category
             ).exclude(id=product.id)[:8]
+            
+            # === PUBLIC Q&A SYSTEM ===
+            questions = ProductQuestion.objects.filter(product=product).select_related('user', 'answered_by')
+            total_questions = questions.count()
+            
+            # Pagination for questions
+            paginator = Paginator(questions, 10)  # 10 questions per page
+            page_number = request.GET.get('page')
+            questions_page = paginator.get_page(page_number)
+            
+            question_form = ProductQuestionForm()
             
             context = {
                 'product': product,
@@ -203,6 +213,9 @@ class ProductDetails(View):
                 'user_order': user_order,
                 'featured_products': featured_products,
                 'related_products': related_products,
+                'questions': questions_page,
+                'total_questions': total_questions,
+                'question_form': question_form,
             }
             return render(request, 'shop/product-detail.html', context)
         
@@ -212,56 +225,78 @@ class ProductDetails(View):
             return redirect('shop')
     
     def post(self, request, pk):
-        """Handle review submission"""
+        """Handle review AND question submission"""
         if not request.user.is_authenticated:
-            messages.error(request, "Please login to post a review.")
+            messages.error(request, "Please login first.")
             return redirect('login')
         
         try:
             product = get_object_or_404(Product, pk=pk)
             
-            # Verify user purchased this product
-            user_order_item = OrderItem.objects.filter(
-                product=product,
-                order__user=request.user,
-                order__status='DELIVERED'
-            ).first()
+            # Check if it's a QUESTION or REVIEW
+            if 'question' in request.POST:
+                # === HANDLE QUESTION SUBMISSION ===
+                form = ProductQuestionForm(request.POST)
+                if form.is_valid():
+                    question = form.save(commit=False)
+                    question.product = product
+                    question.user = request.user
+                    question.save()
+                    
+                    # TODO: Send notification to seller (product.user)
+                    # You can use Django signals or email here
+                    
+                    messages.success(request, "Your question has been posted! The seller will be notified.")
+                    return redirect('product_detail', pk=pk)
+                else:
+                    messages.error(request, "Please enter a valid question.")
+                    return redirect('product_detail', pk=pk)
             
-            if not user_order_item:
-                messages.error(request, "You can only review products you have purchased.")
+            elif 'rating' in request.POST:
+                # === HANDLE REVIEW SUBMISSION (existing code) ===
+                user_order_item = OrderItem.objects.filter(
+                    product=product,
+                    order__user=request.user,
+                    order__status='DELIVERED'
+                ).first()
+                
+                if not user_order_item:
+                    messages.error(request, "You can only review products you have purchased.")
+                    return redirect('product_detail', pk=pk)
+                
+                if ProductReview.objects.filter(
+                    product=product,
+                    user=request.user,
+                    order=user_order_item.order
+                ).exists():
+                    messages.error(request, "You have already reviewed this product.")
+                    return redirect('product_detail', pk=pk)
+                
+                rating = int(request.POST.get('rating'))
+                review_text = request.POST.get('review', '').strip()
+                
+                if not review_text or len(review_text) < 10:
+                    messages.error(request, "Review must be at least 10 characters long.")
+                    return redirect('product_detail', pk=pk)
+                
+                ProductReview.objects.create(
+                    product=product,
+                    user=request.user,
+                    order=user_order_item.order,
+                    rating=rating,
+                    review=review_text
+                )
+                
+                messages.success(request, "Review submitted successfully!")
                 return redirect('product_detail', pk=pk)
             
-            # Check if already reviewed
-            if ProductReview.objects.filter(
-                product=product,
-                user=request.user,
-                order=user_order_item.order
-            ).exists():
-                messages.error(request, "You have already reviewed this product.")
+            else:
+                messages.error(request, "Invalid request.")
                 return redirect('product_detail', pk=pk)
-            
-            # Create review
-            rating = int(request.POST.get('rating'))
-            review_text = request.POST.get('review', '').strip()
-            
-            if not review_text or len(review_text) < 10:
-                messages.error(request, "Review must be at least 10 characters long.")
-                return redirect('product_detail', pk=pk)
-            
-            ProductReview.objects.create(
-                product=product,
-                user=request.user,
-                order=user_order_item.order,
-                rating=rating,
-                review=review_text
-            )
-            
-            messages.success(request, "Review submitted successfully!")
-            return redirect('product_detail', pk=pk)
         
         except Exception as e:
-            logger.error(f"Error submitting review: {str(e)}")
-            messages.error(request, "An error occurred while submitting your review.")
+            logger.error(f"Error in POST: {str(e)}")
+            messages.error(request, "An error occurred.")
             return redirect('product_detail', pk=pk)
 
 #Product search system
@@ -725,3 +760,5 @@ def add_to_cart_view(request, pk):
         cart_item.save()
     messages.success(request, f"{product.title} added to cart!")
     return redirect('product_detail', pk=pk)
+def about(request):
+    return render(request, 'shop/about.html')
