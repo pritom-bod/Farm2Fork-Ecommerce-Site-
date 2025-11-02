@@ -4,6 +4,10 @@ Django settings for Farm2Fork project.
 
 from pathlib import Path
 import os
+# Add to your settings.py
+
+# Gemini API Key
+GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', 'AIzaSyDVkSdUXfREDyxWoY6DVREQHviiOt2-vG8')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -62,23 +66,23 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Farm2Fork.wsgi.application'
 
 # Database
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'f2fpostgres',
-        'USER': 'postgres',
-        'PASSWORD': 'pritom406',
-        'HOST': 'localhost',
-        'PORT': '5432'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'f2fpostgres',
+#         'USER': 'postgres',
+#         'PASSWORD': 'pritom406',
+#         'HOST': 'localhost',
+#         'PORT': '5432'
+#     }
+# }
 
 
 # Password validation

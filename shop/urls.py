@@ -42,6 +42,7 @@ urlpatterns = [
     path('add-to-cart/', views.add_to_cart, name='ajax_add_to_cart'),  # Renamed to avoid clash
     path('update-cart-item/', views.update_cart_item, name='update_cart_item'),
     path('remove-from-cart/', views.remove_from_cart, name='remove_from_cart'),
+    path('api/ai-chat/', views.ai_chat, name='ai_chat'),
 ]
 
 if settings.DEBUG:

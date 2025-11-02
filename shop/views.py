@@ -24,6 +24,13 @@ from .forms import (
     MySetPasswordForm,
     ProductQuestionForm,
 )
+# ai integration imports for chat boot feature
+import google.generativeai as genai
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+import json
+from django.http import JsonResponse
+import traceback
 
 # Setup logging
 logger = logging.getLogger(__name__)
@@ -767,3 +774,103 @@ def add_to_cart_view(request, pk):
     return redirect('product_detail', pk=pk)
 def about(request):
     return render(request, 'shop/about.html')
+# Add these imports at the top
+
+
+# Configure Gemini AI
+genai.configure(api_key=settings.GEMINI_API_KEY)
+
+# AI Chat View
+
+@csrf_exempt
+@csrf_exempt
+def ai_chat(request):
+    """AI Chatbot - tries multiple Gemini models"""
+    
+    if request.method != 'POST':
+        return JsonResponse({
+            'success': False,
+            'response': 'Invalid request'
+        })
+    
+    try:
+        # Parse request
+        data = json.loads(request.body.decode('utf-8'))
+        user_message = data.get('message', '').strip()
+        
+        if not user_message:
+            return JsonResponse({
+                'success': True,
+                'response': 'Please ask me something!'
+            })
+        
+        # Import Gemini
+        import google.generativeai as genai
+        from django.conf import settings
+        
+        # Configure
+        api_key = settings.GEMINI_API_KEY
+        genai.configure(api_key=api_key)
+        
+        # Get Products
+        products = Product.objects.all()[:20]
+        
+        CAT = {
+            'F': 'Fruits', 'V': 'Vegetable', 'DF': 'Dryfruits',
+            'M': 'Meat', 'FH': 'Fish', 'B': 'Bread'
+        }
+        
+        prod_list = []
+        for p in products:
+            seller = getattr(p, 'seller', None)
+            seller_name = seller.shop_name if seller else "Farm2Fork"
+            cat_name = CAT.get(p.category, 'Other')
+            prod_list.append(f"{p.title} - ৳{p.discounted_price} ({cat_name}) - {seller_name}")
+        
+        products_text = "\n".join(prod_list) if prod_list else "No products"
+        
+        # Simple prompt
+        prompt = f"""You are Farm2Fork shopping assistant.
+
+Products:
+{products_text}
+
+Customer: {user_message}
+
+Reply in 2-3 sentences:"""
+        
+        # Try different models in order
+        models_to_try = [
+            'gemini-2.5-flash',
+          
+        ]
+        
+        last_error = None
+        
+        for model_name in models_to_try:
+            try:
+                model = genai.GenerativeModel(model_name)
+                response = model.generate_content(prompt)
+                
+                if response and response.text:
+                    return JsonResponse({
+                        'success': True,
+                        'response': response.text
+                    })
+            except Exception as e:
+                last_error = str(e)
+                continue  # Try next model
+        
+        # If all models failed
+        return JsonResponse({
+            'success': True,
+            'response': f'All AI models failed. Last error: {last_error}'
+        })
+        
+    except Exception as e:
+        error_trace = traceback.format_exc()
+        logger.error(f"Chat error:\n{error_trace}")
+        return JsonResponse({
+            'success': True,
+            'response': f'Error: {str(e)}'
+        })
