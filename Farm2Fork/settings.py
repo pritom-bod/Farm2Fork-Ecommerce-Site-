@@ -5,9 +5,13 @@ Django settings for Farm2Fork project.
 from pathlib import Path
 import os
 # Add to your settings.py
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
+GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
 # Gemini API Key
-GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', 'AIzaSyDVkSdUXfREDyxWoY6DVREQHviiOt2-vG8')
+# GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', 'AIzaSyDVkSdUXfREDyxWoY6DVREQHviiOt2-vG8')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -83,7 +87,6 @@ DATABASES = {
 #         'PORT': '5432'
 #     }
 # }
-
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
